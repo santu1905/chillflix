@@ -1,0 +1,4171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+  <title>CHILLFLIX 🎬</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --red: #E50914;
+      --dark-red: #b0060f;
+      --soft-pink: #ffb3c1;
+      --blush: #ffd6e0;
+      --black: #0b0b0b;
+      --white: #fff;
+      --gold: #ffd700;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .float-item {
+      position: absolute;
+      animation: floatUp 8s infinite;
+      opacity: 0;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(0deg)
+      }
+
+      10% {
+        opacity: 1
+      }
+
+      90% {
+        opacity: .6
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-10vh) rotate(360deg)
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes giftFloat {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-3deg)
+      }
+
+      50% {
+        transform: translateY(-15px) rotate(3deg)
+      }
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.3)
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(.5);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    @keyframes countPulse {
+      0% {
+        transform: scale(1.5);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: scale(2);
+        filter: blur(20px)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+        filter: blur(0)
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: .2
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0)
+      }
+
+      25% {
+        transform: translateX(-8px)
+      }
+
+      75% {
+        transform: translateX(8px)
+      }
+    }
+
+    @keyframes waveAnim {
+
+      0%,
+      100% {
+        transform: scaleY(1)
+      }
+
+      50% {
+        transform: scaleY(.4)
+      }
+    }
+
+    @keyframes flip3d {
+      0% {
+        transform: rotateY(0)
+      }
+
+      100% {
+        transform: rotateY(180deg)
+      }
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(.85rem, 2vw, 1rem);
+      padding: clamp(10px, 2vw, 14px) clamp(24px, 5vw, 40px);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all .3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, .2);
+      transform: translateX(-100%);
+      transition: transform .3s ease;
+    }
+
+    .btn:hover::after {
+      transform: translateX(0)
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, .25)
+    }
+
+    .btn:active {
+      transform: translateY(-1px)
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #E50914, #b0060f);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, .4);
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, .6);
+      color: #6d2b3d;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(109, 43, 61, .3);
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #E50914, #b0060f);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, .5);
+      font-size: clamp(.9rem, 2.2vw, 1.1rem);
+      padding: clamp(12px, 2.5vw, 16px) clamp(30px, 6vw, 50px);
+    }
+
+    /* ─── INTRO ─── */
+    #screen-intro {
+      background: linear-gradient(135deg, #1a0810 0%, #2d0f1e 40%, #1a0810 100%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #screen-intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(229, 9, 20, .15) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(255, 100, 150, .12) 0%, transparent 50%);
+    }
+
+    .intro-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      animation: fadeInUp .8s ease;
+    }
+
+    .intro-crown {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin-bottom: 10px;
+      animation: bounce 1s infinite;
+    }
+
+    .intro-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(.9rem, 2.5vw, 1.15rem);
+      font-weight: 800;
+      color: #ffb3c1;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .intro-club {
+      font-size: clamp(.65rem, 1.8vw, .85rem);
+      color: var(--red);
+      font-weight: 800;
+      background: rgba(229, 9, 20, .15);
+      border: 1px solid rgba(229, 9, 20, .3);
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .ready-text {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: #ffb3c1;
+      font-weight: 700;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn .5s 2s forwards;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn .5s 2.3s forwards;
+    }
+
+    .gift-gif-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: -10px 0 0 0;
+    }
+
+    .gift-gif-main {
+      width: 180px;
+      max-width: 75%;
+      height: auto;
+      filter: drop-shadow(0 0 15px rgba(255, 180, 200, .4));
+    }
+
+    /* ─── YES / NO ─── */
+    #screen-yes {
+      background: linear-gradient(135deg, #1a0810, #2d1020, #1a0810);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .yes-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-weight: 900;
+      color: #ffb3c1;
+      margin: 10px 0;
+      animation: fadeInUp .5s ease;
+    }
+
+    .yes-sub {
+      font-size: clamp(.9rem, 2vw, 1.1rem);
+      color: rgba(255, 179, 193, .7);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .reaction-gif {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      margin: 10px auto;
+      display: block;
+    }
+
+    #screen-no {
+      background: linear-gradient(135deg, #1a0a08, #2d1208, #1a0a08);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .no-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #ff6b35;
+    }
+
+    /* ─── MODAL BASE ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .78);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: linear-gradient(135deg, #1a0810, #2d1020);
+      border-radius: 24px;
+      padding: clamp(20px, 5vw, 36px);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(229, 9, 20, .4), 0 0 80px rgba(229, 9, 20, .1);
+      animation: popIn .4s cubic-bezier(.175, .885, .32, 1.275);
+      border: 1px solid rgba(229, 9, 20, .2);
+      position: relative;
+    }
+
+    .modal-emoji {
+      font-size: 3rem;
+    }
+
+    .modal-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffb3c1;
+      margin: 10px 0;
+    }
+
+    .modal-sub {
+      font-size: .95rem;
+      color: rgba(255, 179, 193, .7);
+      margin-bottom: 16px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .7);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all .3s;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: var(--red);
+      color: #fff;
+    }
+
+    /* ─── GIFT ROOM ─── */
+    #screen-gift {
+      background: linear-gradient(160deg, #1a0a0f 0%, #2d1420 40%, #1c0a12 100%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .gift-room-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--soft-pink);
+      margin-bottom: 6px;
+    }
+
+    .gift-room-sub {
+      color: var(--blush);
+      font-size: clamp(.85rem, 2vw, 1rem);
+      margin-bottom: 20px;
+      opacity: .8;
+    }
+
+    .gift-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 15px 0;
+    }
+
+    .gift-box {
+      font-size: clamp(3rem, 10vw, 6rem);
+      cursor: pointer;
+      transition: all .3s;
+      animation: giftFloat 3s infinite;
+      filter: drop-shadow(0 0 20px rgba(229, 9, 20, .5));
+    }
+
+    .back-corner {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background: rgba(255, 179, 193, .15);
+      color: #ffb3c1;
+      border: 1px solid rgba(255, 179, 193, .3);
+      border-radius: 999px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      transition: all .3s;
+      backdrop-filter: blur(8px);
+    }
+
+    .back-corner:hover {
+      background: rgba(255, 179, 193, .25);
+    }
+
+    /* ─── PASSWORD ─── */
+    .pw-input-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    .pw-digit {
+      width: 52px;
+      height: 60px;
+      background: rgba(255, 255, 255, .06);
+      border: 2px solid rgba(229, 9, 20, .3);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      outline: none;
+      transition: border-color .3s;
+    }
+
+    .pw-digit:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, .2);
+    }
+
+    .pw-hint {
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .3);
+      margin-top: 4px;
+    }
+
+    .pw-shake {
+      animation: shake .4s ease;
+    }
+
+    /* ─── ENTRY ─── */
+    #screen-chillflix-entry {
+      background: radial-gradient(ellipse at center, #1a0808 0%, #0b0b0b 70%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .entry-pre {
+      font-size: clamp(.85rem, 2vw, 1rem);
+      font-weight: 700;
+      color: var(--soft-pink);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: fadeIn .6s .3s forwards;
+    }
+
+    .chillflix-logo-big {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.5rem, 10vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      opacity: 0;
+      animation: fadeInUp .8s .8s forwards;
+    }
+
+    .logo-chill {
+      color: #fff;
+    }
+
+    .logo-flix {
+      color: var(--red);
+    }
+
+    .entry-heart {
+      font-size: 2rem;
+      animation: heartbeat 1s infinite;
+    }
+
+    .entry-sub {
+      font-size: clamp(.85rem, 2vw, 1rem);
+      color: rgba(255, 255, 255, .7);
+      max-width: 400px;
+      margin: 12px auto 24px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeIn .6s 1.5s forwards;
+    }
+
+    .entry-btn-wrap {
+      opacity: 0;
+      animation: fadeIn .6s 2s forwards;
+    }
+
+    .entry-love {
+      font-size: .8rem;
+      color: rgba(255, 255, 255, .35);
+      margin-top: 16px;
+      opacity: 0;
+      animation: fadeIn .6s 2.5s forwards;
+    }
+
+    .star-field {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 2s infinite;
+    }
+
+    /* ─── LOGO ─── */
+    #screen-logo {
+      background: #0b0b0b;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .logo-reveal {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(3rem, 12vw, 8rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      animation: logoReveal 2s ease forwards;
+    }
+
+    .logo-wave {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn .5s 1s forwards;
+    }
+
+    .wave-bar {
+      width: 4px;
+      border-radius: 2px;
+      background: var(--red);
+      animation: waveAnim .8s ease infinite;
+    }
+
+    .wave-bar:nth-child(1) {
+      height: 14px;
+      animation-delay: 0s
+    }
+
+    .wave-bar:nth-child(2) {
+      height: 22px;
+      animation-delay: .1s
+    }
+
+    .wave-bar:nth-child(3) {
+      height: 30px;
+      animation-delay: .2s
+    }
+
+    .wave-bar:nth-child(4) {
+      height: 22px;
+      animation-delay: .3s
+    }
+
+    .wave-bar:nth-child(5) {
+      height: 14px;
+      animation-delay: .4s
+    }
+
+    .wave-bar:nth-child(6) {
+      height: 22px;
+      animation-delay: .5s
+    }
+
+    .wave-bar:nth-child(7) {
+      height: 30px;
+      animation-delay: .6s
+    }
+
+    /* ─── PROFILES ─── */
+    #screen-profiles {
+      background: #0b0b0b;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 30px;
+    }
+
+    /* home icon top-left on profiles */
+    .profiles-home-btn {
+      position: absolute;
+      top: 20px;
+      left: clamp(16px, 4vw, 40px);
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .18);
+      color: rgba(255, 255, 255, .75);
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .78rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      transition: all .3s;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .profiles-home-btn:hover {
+      background: rgba(229, 9, 20, .3);
+      border-color: rgba(229, 9, 20, .5);
+      color: #fff;
+    }
+
+    .profile-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2.3rem);
+      font-weight: 800;
+      color: #ffb3c1;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .profiles-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 44px);
+      flex-wrap: nowrap;
+    }
+
+    .profile-card {
+      cursor: pointer;
+      text-align: center;
+      transition: all .3s ease;
+      animation: fadeInUp .6s ease backwards;
+    }
+
+    .profile-card:nth-child(1) {
+      animation-delay: .1s
+    }
+
+    .profile-card:nth-child(2) {
+      animation-delay: .2s
+    }
+
+    .profile-card:nth-child(3) {
+      animation-delay: .3s
+    }
+
+    .profile-pic-wrap {
+      display: block;
+      margin: 0 auto 12px;
+      width: clamp(120px, 22vw, 180px);
+      height: clamp(120px, 22vw, 180px);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 3px solid rgba(255, 179, 193, .35);
+      box-shadow: 0 0 20px rgba(255, 179, 193, .22);
+      transition: all .3s;
+    }
+
+    .profile-card:hover .profile-pic-wrap {
+      transform: scale(1.08);
+      border-color: #ffb3c1;
+      box-shadow: 0 0 32px rgba(255, 179, 193, .55);
+    }
+
+    .profile-pic {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .profile-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(.8rem, 2vw, 1rem);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-top: 4px;
+      transition: .3s;
+    }
+
+    .profile-role {
+      font-size: .65rem;
+      color: rgba(255, 255, 255, .25);
+      margin-top: 3px;
+    }
+
+    .profile-card:hover .profile-name {
+      color: #ffb3c1;
+    }
+
+    @media(max-width:768px) {
+      .profiles-row {
+        width: 100%;
+        justify-content: space-evenly;
+        gap: 8px;
+      }
+
+      .profile-pic-wrap {
+        width: clamp(80px, 26vw, 110px);
+        height: clamp(80px, 26vw, 110px);
+      }
+
+      .profile-name {
+        font-size: .7rem;
+      }
+    }
+
+    /* ─── NAV ─── */
+    .cf-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 14px clamp(16px, 5vw, 60px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .94), transparent);
+      pointer-events: none;
+    }
+
+    .cf-logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: all;
+    }
+
+    /* ── premium music + back buttons ── */
+    .music-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .75rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      transition: all .3s;
+      backdrop-filter: blur(12px);
+    }
+
+    .music-btn .mb-icon {
+      font-size: .9rem;
+    }
+
+    .music-btn .mb-wave {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      height: 14px;
+    }
+
+    .music-btn .mb-wave span {
+      width: 2px;
+      border-radius: 1px;
+      background: var(--red);
+      display: block;
+      animation: waveAnim .7s ease infinite;
+    }
+
+    .music-btn .mb-wave span:nth-child(1) {
+      height: 6px;
+      animation-delay: 0s
+    }
+
+    .music-btn .mb-wave span:nth-child(2) {
+      height: 10px;
+      animation-delay: .1s
+    }
+
+    .music-btn .mb-wave span:nth-child(3) {
+      height: 14px;
+      animation-delay: .2s
+    }
+
+    .music-btn .mb-wave span:nth-child(4) {
+      height: 10px;
+      animation-delay: .3s
+    }
+
+    .music-btn .mb-wave span:nth-child(5) {
+      height: 6px;
+      animation-delay: .4s
+    }
+
+    .music-btn.playing {
+      border-color: rgba(229, 9, 20, .5);
+      background: rgba(229, 9, 20, .15);
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, .18);
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .18);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .75rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      transition: all .3s;
+      backdrop-filter: blur(12px);
+    }
+
+    .back-btn:hover {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* ─── BIRTHDAY COUNTER ─── */
+    #screen-birthday-counter {
+      background: #0b0b0b;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #screen-birthday-counter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #1a0808, #0b0b0b);
+    }
+
+    .bday-counter-label {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(.9rem, 2.5vw, 1.2rem);
+      color: rgba(255, 255, 255, .45);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .counter-num {
+      position: relative;
+      z-index: 2;
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(5rem, 20vw, 12rem);
+      font-weight: 900;
+      color: var(--red);
+      animation: countPulse .5s ease;
+      line-height: 1;
+    }
+
+    /* ─── BIRTHDAY SCREEN ─── */
+    #screen-birthday {
+      background: linear-gradient(160deg, #0b0b0b, #1a0808, #0b0b0b);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(70px, 10vh, 90px) 20px 60px;
+      overflow-y: auto;
+    }
+
+    .duo-gif {
+      width: 120px;
+      height: auto;
+      margin: 0 auto 10px;
+    }
+
+    .birthday-main {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #ff7aa8;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .birthday-script {
+      font-family: cursive;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: #ffd3e1;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255, 179, 193, .6);
+      margin-top: 5px;
+    }
+
+    .bday-tagline {
+      font-size: clamp(.9rem, 2.2vw, 1.15rem);
+      color: rgba(255, 179, 193, .8);
+      font-style: italic;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .birthday-photo {
+      width: min(320px, 85vw);
+      height: auto;
+      border-radius: 20px;
+      display: block;
+      margin: 20px auto;
+      box-shadow: 0 0 30px rgba(255, 105, 180, .4);
+    }
+
+    /* ─── HERO ─── */
+    #screen-hero {
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;
+      padding-top: 20px;
+      scrollbar-width: none;
+    }
+
+    #screen-hero::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hero-section {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      padding: clamp(20px, 5vw, 80px);
+      padding-bottom: clamp(40px, 6vh, 80px);
+      overflow: hidden;
+    }
+
+    /* ── single hero background image ── */
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* desktop: right half */
+    .hero-bg-img img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 52%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      mask-image: linear-gradient(to left, rgba(0, 0, 0, .75) 0%, rgba(0, 0, 0, 0) 100%);
+      -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, .75) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .hero-bg-gradient {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to right, rgba(11, 11, 11, 1) 0%, rgba(11, 11, 11, .95) 32%, rgba(11, 11, 11, .6) 58%, rgba(11, 11, 11, .15) 100%),
+        linear-gradient(to bottom, rgba(11, 11, 11, .5) 0%, transparent 22%, transparent 62%, rgba(11, 11, 11, 1) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero-badge {
+      display: inline-block;
+
+      padding: 6px 14px;
+      margin-bottom: 12px;
+
+      border-radius: 999px;
+
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+
+      color: var(--red);
+
+      background: rgba(229, 9, 20, .1);
+      border: 1px solid rgba(229, 9, 20, .3);
+    }
+
+    .hero-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+
+      line-height: 1.05;
+      color: #fff;
+
+      margin-bottom: 22px;
+
+      text-shadow: 0 2px 20px rgba(0, 0, 0, .5);
+    }
+
+    .hero-desc {
+      font-size: clamp(.88rem, 1.6vw, 1rem);
+      line-height: 1.95;
+
+      color: rgba(255, 255, 255, .82);
+
+      max-width: 540px;
+      margin-bottom: 30px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-play {
+      background: #fff;
+      color: #000;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(.85rem, 2vw, 1rem);
+      padding: clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px);
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-play:hover {
+      background: rgba(255, 255, 255, .87);
+      transform: scale(1.03);
+    }
+
+    .btn-ratings {
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: clamp(.85rem, 2vw, 1rem);
+      padding: clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px);
+      border-radius: 6px;
+      border: 2px solid rgba(255, 255, 255, .28);
+      cursor: pointer;
+      transition: all .3s;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ratings:hover {
+      background: rgba(255, 255, 255, .22);
+      transform: scale(1.03);
+    }
+
+    .theme-addy .hero-name {
+      background: linear-gradient(135deg, #7fb3ff, #a0c8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .theme-addy .hero-badge {
+      color: #7fb3ff;
+      border-color: rgba(100, 150, 255, .3);
+      background: rgba(100, 150, 255, .1);
+    }
+
+    .theme-adsha .hero-name {
+      background: linear-gradient(135deg, #7fff7f, #a8e063);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .theme-adsha .hero-badge {
+      color: #7fff7f;
+      border-color: rgba(100, 200, 100, .3);
+      background: rgba(100, 200, 100, .1);
+    }
+
+    /* ───────────────── MOBILE ───────────────── */
+
+    @media(max-width:768px) {
+
+      .hero-section {
+        min-height: auto;
+        padding: 18px;
+        padding-top: 50px;
+        padding-bottom: 40px;
+        align-items: flex-start;
+      }
+
+      .hero-bg-img img {
+        width: 100%;
+        height: 100%;
+        opacity: .45;
+
+        object-position: center top;
+
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+
+      .hero-bg-gradient {
+        background:
+          linear-gradient(to bottom,
+            rgba(11, 11, 11, .45) 0%,
+            rgba(11, 11, 11, .72) 40%,
+            rgba(11, 11, 11, 1) 100%);
+      }
+
+      .hero-content {
+        padding-top: 30px;
+        max-width: 100%;
+      }
+
+      .hero-badge {
+        font-size: .55rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+      }
+
+      .hero-name {
+        font-size: 2rem;
+        line-height: 1.15;
+        margin-bottom: 18px;
+      }
+
+      .hero-desc {
+        font-size: .8rem;
+        line-height: 1.8;
+        max-width: 100%;
+        margin-bottom: 24px;
+      }
+
+      .hero-btns {
+        gap: 10px;
+      }
+
+      .btn-play,
+      .btn-ratings {
+        font-size: .8rem;
+        padding: 10px 20px;
+      }
+    }
+
+    /* ───────── SECTION STYLING ───────── */
+
+    .cf-section {
+      padding: clamp(32px, 6vw, 70px) clamp(18px, 5vw, 60px);
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.15rem, 2.8vw, 1.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: .5px;
+    }
+
+    .section-sub {
+      font-size: clamp(.78rem, 1.7vw, .95rem);
+      color: rgba(255, 255, 255, .55);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .scroll-hint {
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .32);
+      text-align: right;
+      margin-bottom: 8px;
+      letter-spacing: .5px;
+    }
+
+    @media(max-width:768px) {
+
+      .cf-section {
+        padding: 28px 16px;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
+
+      .section-sub {
+        font-size: .78rem;
+        margin-bottom: 18px;
+      }
+    }
+
+    /* ─── PHOTO CARDS (Letters / Adsha surprises) ─── */
+    .photo-cards-row {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 14px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(229, 9, 20, .35) transparent;
+    }
+
+    .photo-cards-row::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .photo-cards-row::-webkit-scrollbar-thumb {
+      background: rgba(229, 9, 20, .35);
+      border-radius: 2px;
+    }
+
+    /* ───────── PORTRAIT PHOTO CARDS ───────── */
+
+    .photo-card-wrap {
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .photo-card-wrap:hover {
+      transform: translateY(-6px) scale(1.03);
+    }
+
+    .photo-card-portrait {
+
+      width: 280px;
+
+      aspect-ratio: 2/3;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      position: relative;
+
+      background: #111;
+
+      border: 1px solid rgba(255, 255, 255, .08);
+
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+    }
+
+    .photo-card-portrait img {
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      background: #111;
+
+      display: block;
+    }
+
+    .photo-card-overlay {
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(to top,
+          rgba(0, 0, 0, .85) 0%,
+          rgba(0, 0, 0, .2) 35%,
+          transparent 60%);
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      padding: 14px;
+    }
+
+    .photo-card-hint {
+
+      font-family: 'Poppins', sans-serif;
+
+      font-size: .72rem;
+
+      font-weight: 700;
+
+      color: #fff;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      text-align: center;
+    }
+
+    @media(max-width:768px) {
+
+      .photo-card-portrait {
+
+        width: 190px;
+      }
+
+      .photo-card-hint {
+
+        font-size: .65rem;
+      }
+    }
+
+    /* instagram square card */
+    .photo-card-square {
+      width: clamp(180px, 28vw, 250px);
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .6);
+      border: 1px solid rgba(100, 200, 100, .2);
+    }
+
+    .photo-card-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media(max-width:768px) {
+
+      .photo-card-square {
+        width: 220px;
+      }
+
+    }
+
+    /* ─── PHOTO POPUP — PORTRAIT FLIP ─── */
+    #photo-popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .92);
+      z-index: 2500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    #photo-popup.show {
+      display: flex;
+    }
+
+    .photo-popup-inner {
+      position: relative;
+      width: min(300px, 82vw);
+    }
+
+    .photo-popup-close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--red);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .3s;
+      box-shadow: 0 4px 14px rgba(229, 9, 20, .5);
+    }
+
+    .photo-popup-close:hover {
+      transform: scale(1.12);
+    }
+
+    .pp-scene {
+      width: 100%;
+      perspective: 900px;
+    }
+
+    .pp-3d-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform .7s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .pp-3d-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .pp-face {
+      border-radius: 18px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .pp-face-front {
+      position: relative;
+      display: block;
+    }
+
+    .pp-face-front img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+      border-radius: 18px;
+    }
+
+    .pp-flip-hint {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, .8) 0%, transparent 100%);
+      padding: 18px 12px 14px;
+      text-align: center;
+      border-radius: 0 0 18px 18px;
+      cursor: pointer;
+    }
+
+    .pp-flip-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: .88rem;
+      font-weight: 800;
+      color: #fff;
+      animation: bounce .8s infinite;
+      display: inline-block;
+    }
+
+    .pp-face-back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+      border-radius: 18px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .pp-face-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 18px;
+    }
+
+    /* ─── ADSHA SQUARE POPUP ─── */
+    #photo-popup-sq {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .92);
+      z-index: 2500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+
+    #photo-popup-sq.show {
+      display: flex;
+    }
+
+    .pp-sq-inner {
+      position: relative;
+      width: min(360px, 88vw);
+    }
+
+    .pp-sq-close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--red);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .3s;
+      box-shadow: 0 4px 14px rgba(229, 9, 20, .5);
+    }
+
+    .pp-sq-close:hover {
+      transform: scale(1.12);
+    }
+
+    /* square popup: instagram 1:1, moderate size */
+    .pp-sq-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 18px;
+      display: block;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, .7);
+      border: 2px solid rgba(100, 200, 100, .25);
+    }
+
+    /* ───────────────── VIDEO ROW ───────────────── */
+
+    .scroll-row {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      padding: 10px 0 16px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(229, 9, 20, .4) transparent;
+    }
+
+    .scroll-row::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .scroll-row::-webkit-scrollbar-thumb {
+      background: rgba(229, 9, 20, .4);
+      border-radius: 10px;
+    }
+
+    /* ───────── LANDSCAPE VIDEOS ───────── */
+
+    .video-card-land {
+      flex-shrink: 0;
+      width: 420px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #141414;
+      cursor: pointer;
+      transition: all .3s ease;
+      border: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .video-card-land:hover {
+      transform: scale(1.04);
+      border-color: rgba(255, 255, 255, .15);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, .45);
+    }
+
+    .video-thumb-land {
+      width: 100%;
+      height: 235px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+    }
+
+    .video-thumb-land video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-info {
+      padding: 0;
+    }
+
+    .video-title {
+      font-family: 'Poppins', sans-serif;
+      color: #ffffff;
+      font-size: .95rem;
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 18px 16px 22px;
+    }
+
+    /* ───────── CREATIVE CORNER ───────── */
+
+    .video-card-port{
+      width:220px;
+      flex-shrink:0;
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .video-card-port:hover{
+      transform:translateY(-6px);
+    }
+
+    .video-thumb-port{
+      width:100%;
+      aspect-ratio:2/3;
+      position:relative;
+      overflow:hidden;
+      border-radius:16px;
+      background:#111;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .video-thumb-port img,
+    .video-thumb-port video{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:contain;
+      background:#111;
+    }
+
+    .play-overlay{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+
+      width:52px;
+      height:52px;
+
+      border-radius:50%;
+
+      background:rgba(0,0,0,.55);
+      color:#fff;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:1rem;
+
+      backdrop-filter:blur(6px);
+      pointer-events:none;
+    }
+
+    .video-info{
+      padding:10px 4px 0;
+    }
+
+    .video-title{
+      font-family:'Poppins',sans-serif;
+      color:#fff;
+      font-size:.85rem;
+      font-weight:700;
+      line-height:1.4;
+      text-align:center;
+      text-transform:uppercase;
+      min-height:42px;
+    }
+
+    @media(max-width:768px){
+
+      .video-card-port{
+        width:170px;
+      }
+
+      .video-title{
+        font-size:.72rem;
+        min-height:38px;
+      }
+
+      .play-overlay{
+        width:42px;
+        height:42px;
+        font-size:.85rem;
+      }
+
+    }
+    /* IMAGE */
+
+    .creative-image {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: block;
+    }
+
+    /* VIDEO */
+
+    .creative-video-preview {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: block;
+    }
+
+    /* PLAY BUTTON */
+
+    .play-overlay {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 52px;
+      height: 52px;
+
+      border-radius: 50%;
+
+      background: rgba(0, 0, 0, .55);
+
+      color: #fff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 1rem;
+
+      backdrop-filter: blur(6px);
+
+      pointer-events: none;
+    }
+
+    /* INFO */
+
+    .video-info {
+      padding: 0;
+    }
+
+    .video-title {
+      font-family: 'Poppins', sans-serif;
+
+      color: #fff;
+
+      font-size: .9rem;
+      font-weight: 700;
+
+      line-height: 1.5;
+      letter-spacing: .8px;
+
+      padding: 16px 14px 20px;
+
+      text-transform: uppercase;
+    }
+
+    /* MOBILE */
+    @media(max-width:768px) {
+
+      .photo-card-portrait {
+        width: 210px;
+        aspect-ratio: 2/3;
+      }
+
+      .photo-card-overlay {
+        padding: 12px;
+        background: linear-gradient(to top,
+            rgba(0, 0, 0, .85) 0%,
+            rgba(0, 0, 0, .45) 45%,
+            transparent 100%);
+      }
+
+      .photo-card-hint {
+        font-size: .72rem;
+        font-weight: 700;
+        color: #fff;
+        text-align: center;
+        line-height: 1.3;
+      }
+    }
+
+    /* ───────── MOBILE ───────── */
+
+    @media(max-width:768px) {
+
+      .scroll-row {
+        gap: 16px;
+        padding-bottom: 18px;
+      }
+
+      .video-card-land {
+        width: 290px;
+      }
+
+      .video-thumb-land {
+        height: 165px;
+      }
+
+      .video-title {
+        font-size: .82rem;
+        padding: 14px 12px 18px;
+        letter-spacing: .8px;
+        line-height: 1.4;
+      }
+    }
+
+    /* ─── PLAY MODAL ─── */
+    #play-modal .modal-box {
+      background: #0a0a12;
+      color: #fff;
+      max-width: 760px;
+      width: 95%;
+      border: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .play-modal-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .play-modal-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .player-ctrl-btn {
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .15);
+      color: rgba(255, 255, 255, .75);
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .72rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      transition: all .3s;
+    }
+
+    .player-ctrl-btn:hover {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .video-player-area {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #111;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .player-placeholder {
+      text-align: center;
+      color: rgba(255, 255, 255, .35);
+    }
+
+    .player-placeholder .big-icon {
+      font-size: 4rem;
+    }
+
+    .player-placeholder p {
+      font-size: .82rem;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, .25);
+    }
+
+    .play-modal-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+
+    .play-modal-genre {
+      font-size: .78rem;
+      color: rgba(255, 255, 255, .45);
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .play-modal-tag {
+      font-size: .85rem;
+      color: rgba(255, 255, 255, .65);
+      font-style: italic;
+      text-align: left;
+    }
+
+    /* ─── VIDEO VIEWER (landscape normal, portrait for creative) ─── */
+    #image-modal .modal-box {
+      width: 95%;
+      background: #0a0a12;
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    #image-modal-img {
+      width: 100%;
+      height: auto;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+
+    #video-viewer .modal-box {
+      background: #0a0a12;
+      width: 95%;
+      border: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    #video-viewer .modal-box.portrait-box {
+      max-width: 380px;
+    }
+
+    #video-viewer .modal-box.landscape-box {
+      max-width: 760px;
+    }
+
+    .viewer-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .viewer-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .viewer-video-area {
+      width: 100%;
+      background: #111;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .viewer-video-area.landscape-ar {
+      aspect-ratio: 16/9;
+    }
+
+    .viewer-video-area.portrait-ar {
+      aspect-ratio: 9/16;
+    }
+
+    /* ─── RATINGS MODAL ─── */
+    #ratings-modal .modal-box {
+      background: linear-gradient(135deg, #0d0d1a, #1a1030);
+      color: #fff;
+      max-width: 500px;
+      border-color: rgba(100, 80, 255, .2);
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .rating-label {
+      font-size: clamp(.78rem, 2vw, .92rem);
+      font-weight: 700;
+      color: #fff;
+      min-width: 135px;
+      text-align: left;
+    }
+
+    .rating-bar-bg {
+      flex: 1;
+      height: 10px;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .rating-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      width: 0;
+      transition: width 1.5s ease;
+      background: linear-gradient(135deg, var(--red), #ff6b9d);
+    }
+
+    .rating-bar-fill-addy {
+      background: linear-gradient(135deg, #1a6ccc, #7fb3ff);
+    }
+
+    .rating-bar-fill-adsha {
+      background: linear-gradient(135deg, #2a8a2a, #7fff7f);
+    }
+
+    .rating-stars {
+      font-size: .73rem;
+      min-width: 56px;
+      text-align: right;
+    }
+
+    /* ─── TREE SECTION ─── */
+    .tree-card {
+      background: linear-gradient(135deg, #0a1a0a, #1a3a1a);
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 32px);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      border: 1px solid rgba(100, 200, 100, .2);
+      transition: all .3s;
+      flex-wrap: wrap;
+    }
+
+    .tree-card:hover {
+      border-color: rgba(100, 200, 100, .5);
+      transform: translateY(-2px);
+    }
+
+    .tree-emoji {
+      font-size: clamp(3rem, 8vw, 5rem);
+    }
+
+    .tree-text {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .tree-text h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 800;
+      color: #7fff7f;
+      margin-bottom: 6px;
+    }
+
+    .tree-text p {
+      font-size: clamp(.8rem, 1.8vw, .95rem);
+      color: rgba(255, 255, 255, .6);
+      line-height: 1.6;
+    }
+
+    .tree-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tree-btn {
+      background: rgba(100, 200, 100, .15);
+      border: 1px solid rgba(100, 200, 100, .35);
+      color: #7fff7f;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      font-size: .82rem;
+      transition: all .3s;
+    }
+
+    .tree-btn:hover {
+      background: rgba(100, 200, 100, .3);
+    }
+
+    /* ─── CERT MODAL — horizontal one-at-a-time scroller ─── */
+    #cert-modal .modal-box {
+      background: linear-gradient(135deg, #0a1a0a, #1a3a1a);
+      border-color: rgba(100, 200, 100, .25);
+
+      width: min(900px, 90vw);
+      max-width: 900px;
+
+      padding: 28px;
+      border-radius: 24px;
+    }
+
+    .cert-slider-wrap {
+      position: relative;
+      margin: 18px 0;
+    }
+
+    .cert-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 0;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .cert-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cert-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 12px;
+
+      border-radius: 16px;
+      overflow: hidden;
+
+      background: rgba(0, 0, 0, .25);
+      border: 1px solid rgba(100, 200, 100, .18);
+    }
+
+    .cert-slide img {
+      width: 100%;
+      max-height: 500px;
+      ;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .cert-placeholder-inner {
+      text-align: center;
+      padding: 20px;
+      color: rgba(127, 255, 127, .3);
+      font-size: .78rem;
+      line-height: 1.8;
+    }
+
+    /* arrows */
+    .cert-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(100, 200, 100, .2);
+      border: 1px solid rgba(100, 200, 100, .4);
+      color: #7fff7f;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all .3s;
+      z-index: 5;
+      backdrop-filter: blur(6px);
+    }
+
+    .cert-arrow:hover {
+      background: rgba(100, 200, 100, .4);
+    }
+
+    .cert-arrow-left {
+      left: -18px;
+    }
+
+    .cert-arrow-right {
+      right: -18px;
+    }
+
+    .cert-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .cert-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(100, 200, 100, .25);
+      transition: background .3s;
+      cursor: pointer;
+    }
+
+    .cert-dot.active {
+      background: #7fff7f;
+    }
+
+    @media(max-width:768px) {
+
+      #cert-modal .modal-box {
+        width: 95vw;
+        padding: 18px;
+      }
+
+      .cert-slide img {
+        max-height: 320px;
+      }
+
+      .cert-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+    }
+
+    /* ─── ADDY ─── */
+    #screen-addy-intro {
+      background: #0a0a1a;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .countdown-container {
+      background: linear-gradient(135deg, #0a1020, #1a2040);
+      border: 1px solid rgba(100, 150, 255, .3);
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 32px);
+      display: flex;
+      gap: clamp(12px, 3vw, 24px);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .countdown-unit {
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .countdown-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #7fb3ff;
+      display: block;
+      line-height: 1;
+    }
+
+    .countdown-label {
+      font-size: .62rem;
+      color: rgba(255, 255, 255, .4);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .addy-hey {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 900;
+      color: #7fb3ff;
+      animation: fadeInUp .8s ease;
+    }
+
+    /* ─── FINAL + FOOTER ─── */
+    .final-section {
+      background: linear-gradient(135deg, #0b0b0b, #1a0808);
+      padding: clamp(40px, 8vw, 80px) clamp(16px, 5vw, 60px);
+      text-align: center;
+      border-top: 1px solid rgba(229, 9, 20, .18);
+    }
+
+    .final-heading {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .final-message {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      font-size: clamp(.85rem, 2vw, 1.05rem);
+      line-height: 1.9;
+      color: rgba(255, 255, 255, .72);
+    }
+
+    .final-message p {
+      margin-bottom: 12px;
+    }
+
+    .cf-footer {
+      background: #0b0b0b;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      padding: clamp(20px, 5vw, 40px) clamp(16px, 5vw, 60px);
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .footer-quote {
+      font-size: clamp(.75rem, 1.8vw, .9rem);
+      color: rgba(255, 255, 255, .45);
+      line-height: 1.8;
+      max-width: 500px;
+      margin: 0 auto 20px;
+    }
+
+    .footer-credits-btn {
+      background: rgba(229, 9, 20, .12);
+      border: 1px solid rgba(229, 9, 20, .3);
+      color: var(--red);
+      padding: 10px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      font-size: .85rem;
+      transition: all .3s;
+    }
+
+    .footer-credits-btn:hover {
+      background: rgba(229, 9, 20, .28);
+    }
+
+    .footer-copy {
+      font-size: .68rem;
+      color: rgba(255, 255, 255, .22);
+      margin-top: 16px;
+    }
+
+        /* ═════════════════ CREDITS MODAL ═════════════════ */
+
+    .credits-modal-box{
+      max-width:520px;
+      width:95%;
+      position:relative;
+    }
+
+    .credits-top{
+      display:flex;
+      justify-content:flex-end;
+      margin-bottom:8px;
+    }
+
+    .credits-heading{
+      text-align:center;
+      font-size:.68rem;
+      color:rgba(255,255,255,.35);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      margin:18px 0 12px;
+    }
+
+    .credits-scroll{
+      max-height:320px;
+      overflow-y:auto;
+      padding-right:6px;
+
+      scrollbar-width:thin;
+      scrollbar-color:rgba(229,9,20,.45) transparent;
+    }
+
+    .credits-scroll::-webkit-scrollbar{
+      width:5px;
+    }
+
+    .credits-scroll::-webkit-scrollbar-thumb{
+      background:rgba(229,9,20,.45);
+      border-radius:20px;
+    }
+
+    .credit-person{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:14px;
+      margin-bottom:10px;
+      transition:.25s ease;
+    }
+
+    .credit-person:hover{
+      background:rgba(255,255,255,.08);
+      transform:translateY(-2px);
+    }
+
+    .credit-name{
+      font-family:'Poppins',sans-serif;
+      font-size:.95rem;
+      font-weight:700;
+      color:#fff;
+      margin-bottom:6px;
+    }
+
+    .credit-role{
+      font-size:.78rem;
+      line-height:1.65;
+      color:rgba(255,255,255,.58);
+    }
+
+    .credits-footer{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.08);
+
+      text-align:center;
+
+      font-size:.78rem;
+      line-height:1.7;
+
+      color:rgba(255,255,255,.42);
+    }
+
+    @media(max-width:768px){
+
+      .credits-modal-box{
+        width:94%;
+      }
+
+      .credits-scroll{
+        max-height:260px;
+      }
+
+      .credit-name{
+        font-size:.88rem;
+      }
+
+      .credit-role{
+        font-size:.72rem;
+      }
+
+      .credits-footer{
+        font-size:.72rem;
+      }
+
+    }
+
+    /* ─── CONFETTI ─── */
+    .confetti-piece {
+      position: fixed;
+      pointer-events: none;
+      animation: confettiFall 3s linear forwards;
+      z-index: 999;
+    }
+
+    #oops-trigger {
+      height: 1px;
+      width: 100%;
+    }
+
+    @media(max-width:480px) {
+      .video-card-port {
+        width: clamp(90px, 30vw, 120px);
+      }
+
+      .video-card-land {
+        width: clamp(140px, 45vw, 170px);
+      }
+
+      .photo-card-portrait {
+        width: clamp(100px, 34vw, 132px);
+      }
+
+      .photo-card-square {
+        width: clamp(128px, 38vw, 158px);
+      }
+    }
+
+    @media(max-width:360px) {
+      .profiles-row {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- ══ INTRO ══ -->
+  <div class="screen active" id="screen-intro">
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none" id="intro-floats"></div>
+    <div class="intro-content">
+      <div class="intro-crown">👑</div>
+      <div class="intro-club">✦ DELULU IS OUR ONLY SOLULU ✦</div>
+      <div class="intro-title">
+        <span style="color:#ffe8f0;">We the Family of</span><br>
+        <span style="color:#ffd700;font-size:1.1em;text-shadow:0 0 10px rgba(255,215,0,.5);">DELULU IS OUR ONLY
+          SOLULU</span><br>
+        <span style="color:#fff;">proudly present you with some very special gifts 🎁✨</span>
+      </div>
+      <div style="color:#ffcadb;font-size:clamp(.72rem,1.7vw,.88rem);margin-bottom:10px;font-style:italic;">Prepared
+        with chaos, love, sleep deprivation, delusion &amp; a suspicious amount of affection 💖</div>
+      <div class="gift-gif-container">
+        <img src="gifs/gift (2).gif" alt="" class="gift-gif-main">
+      </div>
+      <div class="ready-text">Are you ready for this little adventure? 👀</div>
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="showScreen('screen-yes')">YESSS ❤️</button>
+        <button class="btn btn-no" id="btn-no-main">NOO 😏</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ YES ══ -->
+  <div class="screen" id="screen-yes">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0810,#2d1020,#1a0810);z-index:0"></div>
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none" id="yes-floats"></div>
+    <div
+      style="position:relative;z-index:2;text-align:center;padding:20px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <img src="gifs/jump.gif" style="width:90px;height:90px;object-fit:contain;margin-bottom:15px;" alt="">
+      <div class="yes-title">HEHEHE WE KNEW IT!! 😆✨</div>
+      <div class="yes-sub">We had absolutely zero doubts about you 😌💖</div>
+      <img src="gifs/dance.gif" alt="" class="reaction-gif">
+      <div style="font-size:clamp(.8rem,2vw,.95rem);color:rgba(255,179,193,.55);margin-bottom:16px;font-style:italic">No
+        refunds, no going back, only chaos ahead 🎊</div>
+      <button class="btn btn-main" onclick="showScreen('screen-gift')">🚀 LET'S GOOO</button>
+    </div>
+  </div>
+
+  <!-- ══ NO ══ -->
+  <div class="screen" id="screen-no">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0a08,#2d1208,#1a0a08);z-index:0"></div>
+    <div
+      style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;text-align:center;padding:20px">
+      <div class="no-title">MAAR KHAOGE 😤</div>
+      <div style="font-size:clamp(.9rem,2.2vw,1.1rem);color:rgba(255,100,50,.7);margin:8px 0 12px;font-weight:700">
+        Excuse me?! You clicked NO?! The audacity 😤</div>
+      <img src="gifs/kick 2.png"
+        style="width:420px;max-width:90%;border-radius:20px;box-shadow:0 0 25px rgba(255,80,80,.35);margin-top:15px;"
+        alt="">
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="no-modal">
+    <div class="modal-box">
+      <div class="modal-title">Please naaaaa... 😭</div>
+      <img src="gifs/please.png" style="width:300px;height:auto;border-radius:16px;margin:10px auto;display:block;"
+        alt="">
+      <div class="modal-sub">The gifts are crying in the corner right now 🎁<br>Please reconsider your life choices 😭
+      </div>
+      <button class="btn btn-yes" onclick="hideModal('no-modal');showScreen('screen-intro')">Retry? 🥺</button>
+    </div>
+  </div>
+
+  <!-- ══ GIFT ROOM ══ -->
+  <div class="screen" id="screen-gift">
+    <div
+      style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#2d0a14,#1a0a0a,#0b0b0b);z-index:0">
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1" id="gift-floats"></div>
+    <div style="position:relative;z-index:2;max-width:600px;text-align:center;padding:20px">
+      <div style="font-size:clamp(2rem,6vw,3.5rem);margin-bottom:4px">📬</div>
+      <div class="gift-room-title">Oopsie... 👀<br>Someone left suspicious packages here 💝</div>
+      <div class="gift-room-sub">Warning: Opening may cause excessive smiling, blushing and happy tears 🤭💖</div>
+      <div class="gift-row">
+        <div class="gift-box">🎁</div>
+        <img src="gifs/heart.gif" alt="" style="width:140px;height:140px;object-fit:contain;">
+        <div class="gift-box">🎁</div>
+      </div>
+      <button class="back-corner" onclick="showScreen('screen-intro')">← Back</button>
+      <button class="btn btn-main" onclick="showPasswordModal()">🎁 OPEN GIFTS</button>
+    </div>
+  </div>
+
+  <!-- PASSWORD MODAL -->
+  <div class="modal-overlay" id="pw-modal">
+    <div class="modal-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div></div><button class="modal-close" onclick="hideModal('pw-modal')">✕</button>
+      </div>
+      <div class="modal-emoji">🔐</div>
+      <div class="modal-title">Secret Password Time!</div>
+      <div class="modal-sub">The universe hid the gifts behind a code<br>Very dramatic. Very necessary 🌟</div>
+      <div class="pw-input-row">
+        <input class="pw-digit" maxlength="1" type="password" inputmode="numeric" id="pw0" oninput="pwInput(0)">
+        <input class="pw-digit" maxlength="1" type="password" inputmode="numeric" id="pw1" oninput="pwInput(1)">
+        <input class="pw-digit" maxlength="1" type="password" inputmode="numeric" id="pw2" oninput="pwInput(2)">
+        <input class="pw-digit" maxlength="1" type="password" inputmode="numeric" id="pw3" oninput="pwInput(3)">
+      </div>
+      <div class="pw-hint">✨ 4 digit secret code ✨</div>
+      <div style="margin-top:14px;display:flex;gap:10px;justify-content:center">
+        <button class="btn btn-main" onclick="checkPassword()" style="padding:12px 32px">🎁 UNLOCK</button>
+      </div>
+      <div id="pw-error" style="color:#ff6b6b;font-size:.78rem;margin-top:8px;display:none">Wrong code! Try again... 🥺
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHILLFLIX ENTRY ══ -->
+  <div class="screen" id="screen-chillflix-entry">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#1a0808 0%,#0b0b0b 70%)"></div>
+    <div class="star-field" id="star-field"></div>
+    <div
+      style="position:relative;z-index:2;text-align:center;padding:20px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div class="entry-pre">✨ DELULU IS OUR ONLY SOLULU ✨</div>
+      <div style="font-size:2rem;margin-bottom:8px;animation:heartbeat 1s infinite;" class="entry-heart">💖</div>
+      <div
+        style="font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,.65);margin-bottom:12px;opacity:0;animation:fadeIn .6s .5s forwards">
+        brings you...</div>
+      <div class="chillflix-logo-big"><span class="logo-chill">CHILL</span><span class="logo-flix">ULU</span></div>
+      <div
+        style="font-size:clamp(.68rem,1.5vw,.82rem);color:rgba(255,255,255,.3);margin:4px 0 12px;letter-spacing:2px;opacity:0;animation:fadeIn .6s 1.2s forwards">
+        ✦ A CHILLFLIX ORIGINAL ✦</div>
+      <div class="entry-sub">One click away from memories, laughter, chaos and dangerous amounts of happiness ✨</div>
+      <div class="entry-btn-wrap"><button class="btn btn-main" onclick="showLogoReveal()">✨ ENTER CHILLFLIX</button>
+      </div>
+      <div class="entry-love">Made with love (and mild sleep deprivation) for lovely people ❤️</div>
+    </div>
+  </div>
+
+  <!-- ══ LOGO REVEAL ══ -->
+  <div class="screen" id="screen-logo">
+    <div style="background:#0b0b0b;position:absolute;inset:0"></div>
+    <div style="position:relative;z-index:2;text-align:center">
+      <div class="logo-reveal"><span style="color:#fff">CHILL</span><span style="color:#E50914">FLIX</span></div>
+      <div class="logo-wave">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROFILES ══ -->
+  <div class="screen" id="screen-profiles" style="background:#0b0b0b">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at top,#1a0808 0%,#0b0b0b 60%)"></div>
+    <!-- home button top left -->
+    <button class="profiles-home-btn" onclick="showScreen('screen-intro')">🏠 Home</button>
+    <div
+      style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:20px;gap:28px">
+      <div style="text-align:center">
+        <div class="profile-title">WHO IS WATCHING? 👀</div>
+        <div style="font-size:clamp(.72rem,1.8vw,.85rem);color:rgba(255,255,255,.3);margin-top:6px;font-style:italic">
+          One click away from absolute chaos 🎁✨</div>
+      </div>
+      <div class="profiles-row">
+        <div class="profile-card" onclick="chooseProfile('ayesha')">
+          <div class="profile-pic-wrap">
+            <img src="profile/ayesha.jpg" class="profile-pic" alt="Ayeshu">
+          </div>
+          <div class="profile-name">AYESHU</div>
+          <div class="profile-role">Birthday Girl ✨</div>
+        </div>
+        <div class="profile-card" onclick="chooseProfile('addy')">
+          <div class="profile-pic-wrap">
+            <img src="profile/addy.jpg" class="profile-pic" alt="Addy">
+          </div>
+          <div class="profile-name">ADDY</div>
+          <div class="profile-role">The Cool One 🔥</div>
+        </div>
+        <div class="profile-card" onclick="chooseProfile('adsha')">
+          <div class="profile-pic-wrap">
+            <img src="profile/adsha 1.jpeg" class="profile-pic" alt="Adsha">
+          </div>
+          <div class="profile-name">ADSHA</div>
+          <div class="profile-role">Chaos Incarnate 💫</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BIRTHDAY COUNTER ══ -->
+  <div class="screen" id="screen-birthday-counter">
+    <div class="bday-counter-label">loading your surprise in</div>
+    <div class="counter-num" id="counter-display">5</div>
+    <div style="font-size:1.5rem;margin-top:10px;animation:heartbeat .8s infinite;position:relative;z-index:2">💖</div>
+  </div>
+
+  <!-- ══ BIRTHDAY ══ -->
+  <div class="screen" id="screen-birthday">
+    <div class="cf-nav">
+      <div class="cf-logo"><span style="color:#fff">CHILL</span><span style="color:#E50914">FLIX</span></div>
+      <div class="nav-right">
+        <button class="music-btn" id="bday-music-btn" onclick="toggleBdayMusic()">
+          <span class="mb-icon">🎵</span>
+          <span id="bday-music-label">Mood</span>
+        </button>
+        <button class="back-btn" onclick="stopAllMusic();showScreen('screen-profiles')">← Profiles</button>
+      </div>
+    </div>
+    <div id="birthday-bg" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0"></div>
+    <div
+      style="position:relative;z-index:2;width:100%;max-width:600px;margin:0 auto;text-align:center;padding:clamp(70px,10vh,90px) 20px 50px">
+      <img src="gifs/duo.gif" class="duo-gif" alt="">
+      <div class="birthday-main">HAPPY BIRTHDAY</div>
+      <div class="birthday-script">💖 Ayesha 💖</div>
+      <div class="bday-tagline">The universe accidentally created a masterpiece today 🌟</div>
+      <img src="birthday.png" class="birthday-photo" alt="Happy Birthday Ayesha">
+      <button class="btn btn-main" onclick="stopAllMusic();showHero('ayesha')" style="margin-top:10px">🎁 GO
+        AHEAD</button>
+    </div>
+  </div>
+
+  <!-- ══ HERO PAGE ══ -->
+  <div class="screen" id="screen-hero">
+    <div class="cf-nav" id="hero-nav">
+      <div class="cf-logo" onclick="stopAllMusic();showScreen('screen-profiles')"><span
+          style="color:#fff">CHILL</span><span style="color:#E50914">FLIX</span></div>
+      <div class="nav-right">
+        <button class="music-btn" id="hero-music-btn" onclick="toggleHeroMusic()">
+          <span class="mb-icon">🎵</span>
+          <span id="hero-music-label">Mood</span>
+          <span class="mb-wave" id="hero-wave" style="display:none">
+            <span></span><span></span><span></span><span></span><span></span>
+          </span>
+        </button>
+        <button class="back-btn" onclick="stopAllMusic();showScreen('screen-profiles')">← Profiles</button>
+      </div>
+    </div>
+
+    <!-- HERO BANNER -->
+    <div class="hero-section" id="hero-section">
+      <div class="hero-bg-img"><img src="" alt="" id="hero-bg-pic"></div>
+      <div class="hero-bg-gradient"></div>
+      <div class="hero-content">
+        <div class="hero-badge" id="hero-badge">✦ CHILLFLIX ORIGINAL</div>
+        <div class="hero-name" id="hero-name">AYESHA SINGH</div>
+        <div class="hero-desc" id="hero-desc"></div>
+        <div class="hero-btns">
+          <button class="btn-play" onclick="openPlayModal()">▶ PLAY</button>
+          <button class="btn-ratings" onclick="openRatingsModal()">⭐ REVIEWS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAGA -->
+    <div class="cf-section">
+      <div class="section-title" id="saga-title">🎬 THE SAGA CONTINUES</div>
+      <div class="section-sub">"From heartfelt moments to absolute chaos — every edit is a little piece of the story.
+        💛✨"</div>
+      <div class="scroll-hint">← swipe →</div>
+      <div class="scroll-row" id="fan-edits-row"></div>
+    </div>
+
+    <!-- LETTERS -->
+    <div class="cf-section" id="messages-section">
+      <div class="section-title" id="messages-title">💌 LETTERS FROM THE HEART</div>
+      <div class="section-sub">"Some words were too precious to stay unsaid — click a card to open it 🤍"</div>
+      <div class="scroll-hint">← swipe →</div>
+      <div class="photo-cards-row" id="photo-cards-row"></div>
+    </div>
+
+    <!-- ADSHA SURPRISES (shown only for adsha) -->
+    <div class="cf-section" id="adsha-photo-section" style="display:none">
+      <div class="section-title">🎁 LITTLE SURPRISES FOR YOU</div>
+      <div class="section-sub">"Each one is a little universe of its own ✨"</div>
+      <div class="scroll-hint">← swipe →</div>
+      <div class="photo-cards-row" id="adsha-photo-row"></div>
+    </div>
+
+    <!-- CREATIVE CORNER -->
+    <div class="cf-section">
+      <div class="section-title">🎨 CREATIVE CORNER</div>
+      <div class="section-sub">"When admiration becomes art. Extremely cute and funny content ahead 🥺"</div>
+      <div class="scroll-hint">← swipe →</div>
+      <div class="scroll-row" id="creative-row"></div>
+    </div>
+
+    <!-- TREE SECTION (all profiles) -->
+    <div class="cf-section" id="tree-section">
+      <div class="section-title">🌱 MEMORIES THAT GROW</div>
+      <div class="section-sub">"Some memories stay. Some keep growing. This one literally does. 🌳"</div>
+      <div class="tree-card">
+        <div class="tree-emoji">🌳</div>
+        <div class="tree-text">
+          <h3>Tree Plantation</h3>
+          <p>A small gesture today. A growing memory for tomorrow. 🌱</p>
+          <div class="tree-btns">
+            <button class="tree-btn" onclick="showModal('tree-modal')">📜 View Story</button>
+            <button class="tree-btn" id="cert-btn" onclick="showModal('cert-modal')">📋 View Certificate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="oops-trigger"></div>
+
+    <div class="final-section">
+      <div class="final-heading">❤️ A FOREVER GIFT ❤️</div>
+      <div class="final-message">
+        <p>This website was never meant to be just another surprise.</p>
+        <p>It is a collection of memories, laughter, creative masterpieces, beautiful moments and pieces of love
+          carefully gathered together in one place.</p>
+        <p>No matter how much time passes, this little corner of the internet will always be here to remind you how
+          special you are to the people who made it.</p>
+        <p><em>Some gifts get old.</em><br><em>Some gifts get forgotten.</em><br><strong style="color:var(--gold)">But
+            memories like these stay forever. ✨</strong></p>
+      </div>
+      <div style="font-size:2rem;margin:16px 0;animation:heartbeat 1s infinite">💕</div>
+    </div>
+
+    <div class="cf-footer">
+      <div class="footer-logo"><span style="color:#fff">CHILL</span><span style="color:#E50914">FLIX</span></div>
+      <div class="footer-quote">Thank you for visiting CHILLFLIX. ❤️<br>May your days be filled with happiness, your
+        memories stay beautiful, and your story continue shining brighter with every chapter yet to come. ✨</div>
+      <button class="footer-credits-btn" onclick="showModal('credits-modal')">✨ CREDITS</button>
+      <div class="footer-copy">© CHILLFLIX ORIGINALS · Made with chaos, love &amp; delulu · Delulu is our only solulu
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ADDY INTRO ══ -->
+  <div class="screen" id="screen-addy-intro">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#0f1a40,#0a0a1a);z-index:0">
+    </div>
+    <div style="position:relative;z-index:2;max-width:500px;padding:20px;text-align:center">
+      <div class="cf-nav" style="position:fixed">
+        <div class="cf-logo"><span style="color:#fff">CHILL</span><span style="color:#E50914">FLIX</span></div>
+        <div class="nav-right"><button class="back-btn" onclick="showScreen('screen-profiles')">← Profiles</button>
+        </div>
+      </div>
+      <div class="addy-hey">HEY ADDY 😎</div>
+      <div style="font-size:clamp(.85rem,2vw,1rem);color:rgba(255,255,255,.55);margin:10px 0 18px">"Your big day is
+        approaching in..."</div>
+      <div class="countdown-container" id="addy-countdown">
+        <div class="countdown-unit"><span class="countdown-num" id="cd-days">--</span><span
+            class="countdown-label">Days</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-hours">--</span><span
+            class="countdown-label">Hours</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-mins">--</span><span
+            class="countdown-label">Mins</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-secs">--</span><span
+            class="countdown-label">Secs</span></div>
+      </div>
+      <div style="color:rgba(255,255,255,.4);font-size:clamp(.78rem,2vw,.92rem);margin:14px 0">Oops... still some time
+        left for your birthday 😭<br><em style="font-size:.85em">24 December 2026</em></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addy-modal">
+    <div class="modal-box"
+      style="background:linear-gradient(135deg,#0a1020,#1a2040);border-color:rgba(100,150,255,.25)">
+      <div class="modal-emoji">💙</div>
+      <div class="modal-title" style="color:#7fb3ff">Why wait though? 🤔</div>
+      <div class="modal-sub" style="color:rgba(127,179,255,.7)">"Special people deserve special things on completely
+        ordinary days as well.<br>The calendar said no. We said watch us. ❤️"</div>
+      <div style="font-size:2.5rem;margin:10px 0">🎁</div>
+      <button class="btn btn-main" onclick="hideModal('addy-modal');showHero('addy')">✨ OPEN NOW</button>
+    </div>
+  </div>
+
+  <!-- ══ PORTRAIT FLIP POPUP ══ -->
+  <div id="photo-popup" onclick="handlePhotoPopupBgClick(event)">
+    <div class="photo-popup-inner">
+      <button class="photo-popup-close" onclick="closePhotoPopup()">✕</button>
+      <div class="pp-scene">
+        <div class="pp-3d-inner" id="pp-3d-inner">
+          <div class="pp-face pp-face-front">
+            <img src="" alt="" id="pp-front-img">
+            <div class="pp-flip-hint" id="pp-flip-hint" onclick="flipCard()">
+              <span class="pp-flip-text">Flip the Card 💌</span>
+            </div>
+          </div>
+          <div class="pp-face pp-face-back">
+            <img src="" alt="" id="pp-back-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ADSHA SQUARE POPUP ══ -->
+  <div id="photo-popup-sq" onclick="handleSqPopupBgClick(event)">
+    <div class="pp-sq-inner">
+      <button class="pp-sq-close" onclick="closePhotoPopupSq()">✕</button>
+      <img src="" alt="" id="pp-sq-img" class="pp-sq-img">
+    </div>
+  </div>
+
+  <!-- ══ RATINGS ══ -->
+  <div class="modal-overlay" id="ratings-modal">
+    <div class="modal-box" style="position:relative;max-width:500px;width:95%">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="modal-close"
+          onclick="hideModal('ratings-modal')">✕</button></div>
+      <div class="modal-emoji" id="ratings-emoji">⭐</div>
+      <div class="modal-title" id="ratings-title">RATINGS</div>
+      <div style="margin:16px 0" id="ratings-bars"></div>
+      <div style="font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.6" id="ratings-footer"></div>
+    </div>
+  </div>
+
+  <!-- ══ PLAY MODAL ══ -->
+  <div class="modal-overlay" id="play-modal">
+    <div class="modal-box" style="position:relative;max-width:760px;width:95%;padding:24px">
+      <div class="play-modal-topbar">
+        <div class="play-modal-controls">
+          <button class="player-ctrl-btn" onclick="requestFullscreen('play-video-area')">⛶ Fullscreen</button>
+          <button class="player-ctrl-btn" onclick="replayArea('play-video-area')">↺ Replay</button>
+        </div>
+        <button class="modal-close" onclick="hideModal('play-modal')">✕</button>
+      </div>
+      <div class="video-player-area" id="play-video-area">
+        <div class="player-placeholder">
+          <div class="big-icon">🎬</div>
+          <p>Add your video URL in the PROFILES data section</p>
+          <p style="font-size:.72rem;margin-top:4px;color:rgba(255,255,255,.18)">Replace videoUrl with YouTube embed URL
+          </p>
+        </div>
+      </div>
+      <div class="play-modal-title" id="play-modal-title"></div>
+      <div class="play-modal-genre" id="play-modal-genre"></div>
+      <div class="play-modal-tag" id="play-modal-tag"></div>
+    </div>
+  </div>
+
+  <!-- ══ VIDEO VIEWER ══ -->
+  <div class="modal-overlay" id="video-viewer">
+    <div class="modal-box landscape-box" id="viewer-modal-box" style="position:relative;padding:24px">
+      <div class="viewer-topbar">
+        <div class="viewer-controls">
+          <button class="player-ctrl-btn" onclick="requestFullscreen('viewer-video-area')">⛶ Fullscreen</button>
+          <button class="player-ctrl-btn" onclick="replayArea('viewer-video-area')">↺ Replay</button>
+        </div>
+        <button class="modal-close" onclick="hideModal('video-viewer')">✕</button>
+      </div>
+      <div class="viewer-video-area landscape-ar" id="viewer-video-area">
+        <div class="player-placeholder">
+          <div class="big-icon">🎬</div>
+          <p>Add video URL in data section</p>
+        </div>
+      </div>
+      <div class="play-modal-title" id="viewer-title"></div>
+      <div class="play-modal-genre" id="viewer-sub"></div>
+    </div>
+  </div>
+
+  <!-- IMAGE MODAL -->
+  <div class="modal-overlay" id="image-modal">
+
+    <div class="modal-box image-modal-box">
+
+      <button class="modal-close" onclick="hideModal('image-modal')">
+        ✕
+      </button>
+
+      <img id="image-modal-img" src="" alt="Creative Corner Image">
+
+    </div>
+
+  </div>
+
+  <!-- ══ TREE MODAL ══ -->
+  <div class="modal-overlay" id="tree-modal">
+    <div class="modal-box"
+      style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);position:relative;border-color:rgba(100,200,100,.25)">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="modal-close"
+          onclick="hideModal('tree-modal')">✕</button></div>
+      <div class="modal-emoji">🌳</div>
+      <div class="modal-title" style="color:#7fff7f">A Growing Memory</div>
+      <div class="modal-sub" style="color:rgba(255,255,255,.65);line-height:1.7">A tree was planted in your honor,
+        creating something that will continue growing long after today becomes a memory. 🌱💚<br><br>Every time it grows
+        taller, somewhere in the world, a memory of you is also growing stronger.</div>
+      <button class="btn"
+        style="background:rgba(100,200,100,.18);border:1px solid rgba(100,200,100,.35);color:#7fff7f;margin-top:10px"
+        onclick="hideModal('tree-modal')">💚 That's Beautiful</button>
+    </div>
+  </div>
+
+  <!-- ══ CERT MODAL — horizontal one-at-a-time ══ -->
+  <div class="modal-overlay" id="cert-modal">
+    <div class="modal-box"
+      style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);position:relative;border-color:rgba(100,200,100,.25);max-width:500px;width:95%;padding:clamp(20px,4vw,32px)">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="modal-close"
+          onclick="hideModal('cert-modal')">✕</button></div>
+      <div class="modal-emoji">📋</div>
+      <div class="modal-title" style="color:#7fff7f" id="cert-modal-title">Certificate of Planting</div>
+      <div style="font-size:.78rem;color:rgba(127,255,127,.5);margin-bottom:10px" id="cert-modal-hint">Use arrows to
+        scroll ← →</div>
+      <div class="cert-slider-wrap">
+        <button class="cert-arrow cert-arrow-left" onclick="certSlide(-1)">‹</button>
+        <div class="cert-slider" id="cert-slider">
+          <!-- populated by JS based on profile -->
+        </div>
+        <button class="cert-arrow cert-arrow-right" onclick="certSlide(1)">›</button>
+      </div>
+      <div class="cert-dots" id="cert-dots"></div>
+      <button class="btn"
+        style="background:rgba(100,200,100,.18);border:1px solid rgba(100,200,100,.35);color:#7fff7f;margin-top:16px"
+        onclick="hideModal('cert-modal')">💚 Close</button>
+    </div>
+  </div>
+
+  <!-- ═════════════════ CREDITS MODAL ═════════════════ -->
+
+  <div class="modal-overlay" id="credits-modal">
+
+    <div class="modal-box credits-modal-box">
+
+      <div class="credits-top">
+        <button class="modal-close" onclick="hideModal('credits-modal')">✕</button>
+      </div>
+
+      <div class="modal-emoji">✨</div>
+
+      <div class="modal-title">
+        The People Behind The Chaos
+      </div>
+
+      <div class="modal-sub">
+        Built with affection, teamwork, creativity and a dangerously high delulu level.
+      </div>
+
+      <div class="credits-heading">
+        ✦ CONTRIBUTORS ✦
+      </div>
+
+      <div class="credits-scroll">
+
+        <div class="credit-person">
+          <div class="credit-name">👑 Santu (@santuu_1905)</div>
+          <div class="credit-role">
+            Founder of Chillflix, Professional Delulu Engineer
+            & Certified Trululu Manufacturer
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">🎬 Marie (@ishq-e-manvik)</div>
+          <div class="credit-role">
+            Head Editor, Frame Perfectionist &
+            Certified Aesthetic Overthinker
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">✨ Maheen (@maheensyed_)</div>
+          <div class="credit-role">
+            Creative Sidekick, Emergency Idea Supplier &
+            Vibe Consultant
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">🎨 Nitya (@dr_chetana02)</div>
+          <div class="credit-role">
+            Assistant Chaos Intern, Creative Apprentice &
+            Part-Time Brainstorm Generator
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">🎞️ Sangsriti (@theannoying_girl)</div>
+          <div class="credit-role">
+            Assistant Editor, Cut Approval Committee &
+            Quality Control Department
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">💸 Kirti (@kirtidapatelneal)</div>
+          <div class="credit-role">
+            Official Sponsor, Financial Wizard &
+            Investor in Delusional Dreams
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">😂 Smriti (@rezoana_smriti)</div>
+          <div class="credit-role">
+            Director of Laughter &
+            Chaos Enhancement Specialist
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">🌟 Sonu (@_style.and_elegance)</div>
+          <div class="credit-role">
+            Chief Moral Support Officer &
+            Random Motivation Distributor
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">💖 Reya (@Reya_DivineHopes)</div>
+          <div class="credit-role">
+            Certified Sunshine Provider &
+            Keeper of Good Vibes
+          </div>
+        </div>
+
+        <div class="credit-person">
+          <div class="credit-name">🦋 Ayushi (@forever_adshayushi)</div>
+          <div class="credit-role">
+            Emotional Support Department &
+            Professional Memory Collector
+          </div>
+        </div>
+
+      </div>
+
+      <div class="credits-footer">
+        Special thanks to everyone who contributed their time, effort, creativity and just the right amount of chaos to make this possible. ❤️
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ══ OOPS ══ -->
+  <div class="modal-overlay" id="oops-modal">
+    <div class="modal-box" style="position:relative">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="modal-close"
+          onclick="hideModal('oops-modal')">✕</button></div>
+      <div class="modal-emoji">😏</div>
+      <div class="modal-title" style="font-size:1.8rem">OOPS!</div>
+      <div class="modal-sub" style="line-height:1.7">Did you think the gifts ended here?<br><br>We still have some
+        <strong style="color:var(--gold)">offline gifts</strong> waiting for you 🎁❤️<br><br>Go grab them 👀
+      </div>
+      <div style="font-size:2rem;margin:10px 0">🎁🎁🎁</div>
+      <button class="btn btn-main" onclick="hideModal('oops-modal')">💕 Cannot Wait!</button>
+    </div>
+  </div>
+
+  <!-- ══ 4 AUDIO ELEMENTS ══ -->
+  <!-- 1. Birthday music -->
+  <audio id="audio-bday" loop src="audio/birthday.mp3"></audio>
+  <!-- 2. Ayesha hero music -->
+  <audio id="audio-ayesha" loop src=""></audio>
+  <!-- 3. Addy hero music -->
+  <audio id="audio-addy" loop src=""></audio>
+  <!-- 4. Adsha hero music -->
+  <audio id="audio-adsha" loop src=""></audio>
+
+  <script>
+    /* ════════════════════════════════════════
+       CONFIG — EDIT YOUR CONTENT HERE
+    ════════════════════════════════════════ */
+    const PASSWORD = '0000';
+
+    // Music source files — add paths here
+    // e.g. musicSrc:'audio/ayesha.mp3'
+    const MUSIC = {
+      bday: 'audio/birthday.mp3',  // happy birthday page
+      ayesha: 'audio/ayesha.mp3',     // ayesha chillflix page
+      addy: 'audio/addy.mp3',       // addy chillflix page
+      adsha: 'audio/adsha.mp3'       // adsha chillflix page
+    };
+
+    const PROFILES = {
+      ayesha: {
+        name: 'AYESHA SINGH', badge: '✦ CHILLFLIX ORIGINAL',
+        desc: `A little bundle of sunshine wrapped in kindness, laughter and endless positivity. ✨
+
+Known for spreading happiness wherever she goes, Ayesha has a rare gift for making people smile, lifting spirits and turning even the most ordinary moments into beautiful memories.
+
+Whether she's dancing without a care in the world, giggling at the smallest things or simply being her wonderfully authentic self, she carries a warmth that makes everyone around her feel a little lighter and a lot happier.
+
+Cute, caring and forever young at heart, she reminds us that growing up doesn't mean letting go of joy, wonder or the ability to find magic in everyday life.
+
+Admired for her kindness, loved for her energy and cherished for the happiness she brings, she is proof that some people are born to brighten the lives of others. 🌸
+
+⚠️ Warning: May cause uncontrollable smiling, sudden bursts of happiness, emotional attachment and the irresistible urge to protect her at all costs. 💛✨`,
+        heroBgPic: 'Profile/ayesha bg.jpg', // e.g. 'images/ayesha-hero.jpg'
+        ratings: [
+          { label: '🥺 Cuteness', val: 100 }, { label: '✨ Pretty', val: 99 },
+          { label: '⚡ Energetic', val: 97 }, { label: '💪 Determined', val: 98 }, { label: '👑 Main Character', val: 100 }
+        ],
+        ratingsFooter: 'Scientific research confirms that Ayesha is illegally adorable. 🥺❤️\nResults could not be replicated. Because nobody else is like her.',
+        ratingsEmoji: '⭐', ratingsTitle: 'AYESHA RATINGS', barClass: '',
+        playTitle: '✨ THE HUMAN SUNSHINE', playGenre: 'Radiance • Happy  • Comfort • Heartwarming',
+        playTagline: '"Some people spend their lives searching for light. Some are born carrying it."',
+        videoUrl: 'Mains/Ayesha.mp4',
+        // 10 flip cards: frontSrc = portrait front pic, backSrc = portrait back pic with message
+        photoCards: [
+          { frontSrc: 'Ayesha poster/1.png', backSrc: 'Ayesha msg/santu.png' }, { frontSrc: 'Ayesha poster/2.png', backSrc: 'Ayesha msg/Marie.png' },
+          { frontSrc: 'Ayesha poster/m.png', backSrc: 'Ayesha msg/Maheen.png' }, { frontSrc: 'Ayesha poster/3.png', backSrc: 'Ayesha msg/smriti.png' },
+          { frontSrc: 'Ayesha poster/sa.png', backSrc: 'Ayesha msg/sangs.png' }, { frontSrc: 'Ayesha poster/4.png', backSrc: 'Ayesha msg/Kirti da.png' },
+          { frontSrc: 'Ayesha poster/5.png', backSrc: 'Ayesha msg/Nits.png' }, { frontSrc: 'Ayesha poster/6.png', backSrc: 'Ayesha msg/Ayu.png' },
+          { frontSrc: 'Ayesha poster/7.png', backSrc: 'Ayesha msg/reya.png' }, { frontSrc: 'Ayesha poster/8.png', backSrc: 'Ayesha msg/sonu.png' }
+        ],
+        fanEditItems: [
+          { emoji: '🎬', title: 'SOFTNESS IN THE NOISE', videoUrl: 'Ayesha vms/Softness in the Noise.mp4' },
+          { emoji: '💫', title: 'SWEETEST MISCHIEF', videoUrl: 'Ayesha vms/Sweetest Mischief.mp4' },
+          { emoji: '🌸', title: 'AYESHA AS SAVAGE MANNAT', videoUrl: 'Ayesha vms/Ayesha As Savage Mannat_.mp4' },
+          { emoji: '✨', title: 'JUST FOR GIGGLES', videoUrl: 'Ayesha vms/Just For Giggles.mp4' },
+          { emoji: '💖', title: 'WHO IS SHE?', videoUrl: 'Ayesha vms/Who is she_.mp4' }
+        ],
+        creativeItems: [
+          { emoji: '🖼️', title: 'FINDING JALPARA', videoUrl: 'Ayesha creative/Finding jalpara-converted.mp4' },
+          {type: 'image', title: 'AYESHU', imageUrl: 'Ayesha creative/Ayeshu.jpg'},
+          { emoji: '🖼️', title: 'UNDER THE SEA', videoUrl: 'Ayesha creative/Under the sea-converted.mp4' }
+        ],
+        // 1 cert for ayesha (path blank — add cert image path)
+        certs: [{ src: 'Trees/Ayesha 1.jpg', label: 'Certificate' }, { src: 'Trees/Ayesha 2.jpg', label: 'Certificate' }],
+        theme: '', heroTheme: 'linear-gradient(160deg,#0b0b0b,#1a0808,#0b0b0b)'
+      },
+      addy: {
+        name: 'ADNAN KHAN', badge: '✦ CHILLFLIX ORIGINAL',
+        desc: `A rare soul with a beautiful heart, unwavering faith and a presence that leaves a lasting impression. ✨
+
+Known for his kindness, quiet strength and the way he inspires people simply by being himself, Addy has a way of making others believe a little more in themselves and in the good around them.
+
+Whether it's through his words, his actions or that effortlessly charming smile that could brighten even the toughest days, he carries a warmth that makes people feel seen, valued and understood.
+
+Admired for his handsome looks, respected for his character and loved for the genuine care he shows to the people around him, he is proof that true strength and kindness can exist in the same person.
+
+⚠️ Warning: May cause spontaneous smiling, increased admiration, emotional attachment and and the inability to scroll past any content featuring him. 💙`,
+        heroBgPic: 'Profile/addy bg.jpg',
+        ratings: [
+          { label: '🔥 Hotness', val: 101 }, { label: '💡 Inspiration', val: 99 },
+          { label: '🎵 Soulful', val: 98 }, { label: '😎 Confidence', val: 100 }, { label: '🤝 Loyalty', val: 100 }
+        ],
+        ratingsFooter: '⚠️ TOO HOT TO HANDLE ⚠️\nViewer discretion advised. Excessive hotness detected. Emergency cooling systems have failed. 🚨🔥',
+        ratingsEmoji: '🔥', ratingsTitle: 'ADDY RATINGS', barClass: 'rating-bar-fill-addy',
+        playTitle: '😎 THE DAWNBREAKER', playGenre: 'Charisma • Inspiration • Legend • Iconic',
+        playTagline: '"Some people arrive and everything changes. He was that person."',
+        videoUrl: 'Mains/Addy.mp4',
+        photoCards: [
+          { frontSrc: 'Adnan poster/1.png', backSrc: 'Adnan msg/Nits.png' }, { frontSrc: 'Adnan poster/2.png', backSrc: 'Adnan msg/Santu.png' },
+          { frontSrc: 'Adnan poster/3.png', backSrc: 'Adnan msg/Smriti_.png' }, { frontSrc: 'Adnan poster/4.png', backSrc: 'Adnan msg/reya.png' },
+          { frontSrc: 'Adnan poster/5.png', backSrc: 'Adnan msg/Sangss.png' }, { frontSrc: 'Adnan poster/6.png', backSrc: 'Adnan msg/Sonu_.png' },
+          { frontSrc: 'Adnan poster/7.jpg', backSrc: 'Adnan msg/Maheen.png' }, { frontSrc: 'Adnan poster/8.png', backSrc: 'Adnan msg/Kirti.png' },
+          { frontSrc: 'Adnan poster/9.png', backSrc: 'Adnan msg/Marie.png' }, { frontSrc: 'Adnan poster/10.png', backSrc: 'Adnan msg/Ayu.png' }
+        ],
+        fanEditItems: [
+          { emoji: '😎', title: 'THE ABSOLUTE PERFECTIONIST', videoUrl: 'Adnan vms/The Absolute Perfectionist.mp4' },
+          { emoji: '🔥', title: 'THE UNMATCHED CHEMISTRY', videoUrl: 'Adnan vms/Unmatched chemistry_.mp4' },
+          { emoji: '💙', title: 'A CERTIFIED HEARTTHROB', videoUrl: 'Adnan vms/A Certified Heartthrob.mp4' },
+          { emoji: '🎵', title: 'JUST FOR GIGGLES', videoUrl: 'Adnan vms/Just For Giggles.mp4' },
+          { emoji: '💎', title: 'WHO IS HE?', videoUrl: 'Adnan vms/Who is he_.mp4' }
+        ],
+        creativeItems: [
+          { emoji: '🖼️', title: 'AQUA MAN', videoUrl: 'Adnan creative/Aqua man-converted.mp4' },
+          { emoji: '🖼️', title: 'SLEEPING BEAUTY', videoUrl: 'Adnan creative/Sleeping beauty_-converted.mp4' },
+          { emoji: '🖼️', title: 'DARD-E-DIL KI DAWA', videoUrl: 'Adnan creative/First aid_-converted.mp4' },
+          {type: 'image', title: 'ADDY', imageUrl: 'Adnan creative/Addu.jpg'},
+          { emoji: '🖼️', title: 'CROCODILE CRUISE', videoUrl: 'Adnan creative/Crocodile cruise-converted.mp4' },
+          { emoji: '🖼️', title: 'TAPORI 1.0', videoUrl: 'Adnan creative/Tapori -converted.mp4' },
+          { emoji: '🖼️', title: 'TAPORI 2.0', videoUrl: 'Adnan creative/Tapori2-converted.mp4' },
+          { emoji: '🖼️', title: 'WHAT\'S ON YOUR MIND?', videoUrl: 'Adnan creative/What_s on your mind_-converted.mp4' },
+          { emoji: '🖼️', title: 'HOPELESS IN LOVE', videoUrl: 'Adnan creative/Hopeless in love-converted.mp4' }
+        ],
+        certs: [{ src: 'Trees/Addy 1.jpg', label: 'Certificate' }, { src: 'Trees/Addy 2.jpg', label: 'Certificate' }],
+        theme: 'theme-addy', heroTheme: 'linear-gradient(160deg,#0b0b0b,#081020,#0b0b0b)'
+      },
+      adsha: {
+        name: 'ADSHA', badge: '✦ CHILLFLIX ORIGINAL',
+        desc: `A phenomenon disguised as a duo. 🌟
+
+Known for stealing scenes, hearts and occasionally the last remaining braincells of their fandom, Adsha have become the definition of comfort, chaos and charisma.
+
+Every appearance feels iconic, every interaction becomes a fan favorite and every moment leaves audiences wanting more.
+
+From laughter-filled adventures to unexpectedly wholesome moments, they continue to remind us why we're fans in the first place.
+
+⚠️ Warning: May cause increased happiness, spontaneous giggling, unhealthy levels of attachment and an inability to move on from this duo.`,
+        heroBgPic: 'Profile/adsha bg.jpg',
+        ratings: [
+          { label: '⚡ Chaotic', val: 100 }, { label: '🥰 Adorable', val: 99 },
+          { label: '✨ Charismatic', val: 100 }, { label: '🤝 Loyalty', val: 98 },
+          { label: '💚 Kindness', val: 100 }, { label: '📈 Fan Obsession', val: 101 }
+        ],
+        ratingsFooter: 'Powered by chaos, kindness and unexpected plot twists.\n"No algorithm could have predicted this duo." ✨',
+        ratingsEmoji: '✨', ratingsTitle: 'ADSHA\'S RATINGS', barClass: 'rating-bar-fill-adsha',
+        playTitle: '💖 UN INATTENDU POUR TOUJOURS', playGenre: 'Funny • Heart • Playful • Wholesome',
+        playTagline: '"Some stories can\'t be predicted. The best ones never can."',
+        videoUrl: 'Mains/Adsha.mp4',
+        // 5 instagram square cards, no flip
+        adshaSqCards: [
+          { imgSrc: 'Adsha poster/1.png' }, { imgSrc: 'Adsha poster/2.png' }, { imgSrc: 'Adsha poster/3.jpg' }, { imgSrc: 'Adsha poster/4.png' }, { imgSrc: 'Adsha poster/5.jpg' }
+        ],
+        fanEditItems: [
+          { emoji: '✨', title: 'HAND CHEMISTRY', videoUrl: 'AdSha edits/Hand Chemistry.mp4' },
+          { emoji: '💚', title: 'TWO OF A KIND', videoUrl: 'AdSha edits/Two of a Kind.mp4' },
+          { emoji: '🌿', title: 'CERTIFIED CHAOTIC', videoUrl: 'AdSha edits/Certified Chaotic_.mp4' },
+          { emoji: '😂', title: 'KUNAFA PAGLUS', videoUrl: 'AdSha edits/Kunafa Paglus_.mp4' },
+          { emoji: '🦋', title: 'THE COMFORT DUO', videoUrl: 'AdSha edits/The Comfort Duo.mp4' }
+        ],
+        creativeItems: [
+          { emoji: '🎨', title: 'READY, SET, GO...', videoUrl: 'Adsha creative/Ready, Set, Go-converted.mp4' },
+          { emoji: '📸', title: 'BEACH VACATION', videoUrl: 'Adsha creative/Beach vacation-converted.mp4' },
+          { emoji: '💌', title: 'TITANIC', videoUrl: 'Adsha creative/Titanic-converted.mp4' },
+          { emoji: '💌', title: 'MANVIK IN PARIS', videoUrl: 'Adsha creative/Manvik in Paris -converted.mp4' },
+          { emoji: '💌', title: 'COURTROOM DRAMA', videoUrl: 'Adsha creative/Courtroom Drama_-converted.mp4' },
+          {
+            type: 'image',
+            title: 'AGAR TUM SAATH HO',
+            imageUrl: 'Adsha creative/agar.jpg'
+          }
+        ],
+        // 1 cert for adsha
+        certs: [{ src: 'Trees/adsha.png', label: 'Certificate' }],
+        theme: 'theme-adsha', heroTheme: 'linear-gradient(160deg,#0b0b0b,#081a08,#0b0b0b)'
+      }
+    };
+
+    /* ════════════════════════════════════════
+       STATE
+    ════════════════════════════════════════ */
+    let currentProfile = 'ayesha';
+    let countdownInterval;
+    let oopsObserver;
+    let musicHintShown = false;
+    let certIndex = 0;
+
+    // Track which audio is "active hero" audio element
+    let heroAudioEl = null;
+    let bdayAudioEl = null;
+
+    /* ════════════════════════════════════════
+       SCREEN NAVIGATION
+    ════════════════════════════════════════ */
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active'); s.style.display = 'none';
+      });
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'flex'; el.classList.add('active'); }
+      if (id === 'screen-intro') initIntroFloats();
+      if (id === 'screen-yes') initYesFloats();
+      if (id === 'screen-gift') initGiftFloats();
+      if (id === 'screen-chillflix-entry') initStarField();
+      if (id === 'screen-addy-intro') { startCountdown(); setTimeout(() => showModal('addy-modal'), 4000); }
+      if (id === 'screen-birthday') initBirthdayBg();
+    }
+
+    /* ════════════════════════════════════════
+       PROFILE SELECTION
+    ════════════════════════════════════════ */
+    function chooseProfile(p) {
+      currentProfile = p;
+      stopAllMusic();
+      if (p === 'addy') showScreen('screen-addy-intro');
+      else if (p === 'ayesha') { showScreen('screen-birthday-counter'); startBirthdayCounter(); }
+      else showHero(p);
+    }
+
+    function startBirthdayCounter() {
+      let count = 5;
+      document.getElementById('counter-display').textContent = count;
+      const iv = setInterval(() => {
+        count--;
+        const el = document.getElementById('counter-display');
+        if (el) { el.textContent = count; el.style.animation = 'none'; el.offsetHeight; el.style.animation = 'countPulse .4s ease'; }
+        if (count <= 0) { clearInterval(iv); showScreen('screen-birthday'); launchConfetti(); }
+      }, 1000);
+    }
+
+    /* ════════════════════════════════════════
+       MUSIC SYSTEM — 4 separate audio elements
+    ════════════════════════════════════════ */
+    function stopAllMusic() {
+      ['audio-bday', 'audio-ayesha', 'audio-addy', 'audio-adsha'].forEach(id => {
+        const a = document.getElementById(id);
+        if (a) { a.pause(); a.currentTime = 0; }
+      });
+      updateMusicBtnState(false);
+    }
+
+    // Birthday music toggle
+    function toggleBdayMusic() {
+      const a = document.getElementById('audio-bday');
+      if (!a) return;
+      if (a.paused) {
+        a.play().catch(() => { });
+        updateBdayMusicBtn(true);
+      } else {
+        a.pause();
+        updateBdayMusicBtn(false);
+      }
+    }
+    function updateBdayMusicBtn(playing) {
+      const btn = document.getElementById('bday-music-btn');
+      const lbl = document.getElementById('bday-music-label');
+      if (!btn || !lbl) return;
+      lbl.textContent = playing ? 'Pause' : 'Mood';
+      btn.classList.toggle('playing', playing);
+    }
+
+    // Hero music toggle (ayesha/addy/adsha)
+    function toggleHeroMusic() {
+      if (!heroAudioEl) return;
+      if (heroAudioEl.paused) {
+        heroAudioEl.play().catch(() => { });
+        updateHeroMusicBtn(true);
+      } else {
+        heroAudioEl.pause();
+        updateHeroMusicBtn(false);
+      }
+    }
+    function updateHeroMusicBtn(playing) {
+      const btn = document.getElementById('hero-music-btn');
+      const lbl = document.getElementById('hero-music-label');
+      const wave = document.getElementById('hero-wave');
+      if (!btn) return;
+      if (lbl) lbl.textContent = playing ? 'Pause' : 'Mood';
+      if (wave) wave.style.display = playing ? 'flex' : 'none';
+      btn.classList.toggle('playing', playing);
+    }
+    function updateMusicBtnState(playing) {
+      updateBdayMusicBtn(playing);
+      updateHeroMusicBtn(playing);
+    }
+
+    function startHeroMusic(profile) {
+      const audioId = 'audio-' + profile;
+      heroAudioEl = document.getElementById(audioId);
+      const src = MUSIC[profile] || '';
+      if (!heroAudioEl || !src) return;
+      heroAudioEl.src = src;
+      heroAudioEl.volume = 0.25;
+      heroAudioEl.play().then(() => updateHeroMusicBtn(true)).catch(() => { });
+    }
+
+    function initBirthdayBg() {
+      launchConfetti();
+      const bg = document.getElementById('birthday-bg');
+      if (bg) {
+        bg.innerHTML = '';
+        const emojis = ['🎉', '🎊', '🎂', '✨', '💖', '⭐', '🎀', '🌟', '💫'];
+        for (let i = 0; i < 20; i++) {
+          const el = document.createElement('div'); el.className = 'float-item';
+          el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          el.style.left = Math.random() * 100 + '%';
+          el.style.animationDelay = Math.random() * 6 + 's';
+          el.style.animationDuration = (Math.random() * 4 + 6) + 's';
+          el.style.fontSize = (Math.random() * 1.5 + 1.2) + 'rem';
+          bg.appendChild(el);
+        }
+      }
+      // start birthday music
+      bdayAudioEl = document.getElementById('audio-bday');
+      if (bdayAudioEl) {
+        bdayAudioEl.src = MUSIC.bday || 'audio/birthday.mp3';
+        bdayAudioEl.volume = 0.25;
+        bdayAudioEl.play().then(() => updateBdayMusicBtn(true)).catch(() => { });
+      }
+    }
+
+      /* ════════════════════════════════════════
+         SHOW HERO
+      ════════════════════════════════════════ */
+      function showHero(profile) {
+        currentProfile = profile;
+        stopAllMusic();
+        const data = PROFILES[profile];
+        showScreen('screen-hero');
+        document.getElementById('hero-section').style.background = data.heroTheme;
+        document.getElementById('screen-hero').className = 'screen active ' + (data.theme || '');
+        document.getElementById('hero-name').textContent = data.name;
+        document.getElementById('hero-badge').textContent = data.badge;
+        document.getElementById('hero-desc').innerHTML = data.desc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+        // hero bg pic
+        const bgPic = document.getElementById('hero-bg-pic');
+        if (data.heroBgPic) { bgPic.src = data.heroBgPic; bgPic.style.display = 'block'; }
+        else { bgPic.src = ''; bgPic.style.display = 'none'; }
+
+        // sections visibility
+        const msgSec = document.getElementById('messages-section');
+        const adshaSec = document.getElementById('adsha-photo-section');
+        if (profile === 'adsha') {
+          msgSec.style.display = 'none';
+          adshaSec.style.display = 'block';
+          buildAdshaSqCards(data.adshaSqCards);
+        } else {
+          msgSec.style.display = 'block';
+          adshaSec.style.display = 'none';
+          buildPhotoCards(data.photoCards, profile);
+        }
+
+        // tree section — visible for all
+        document.getElementById('tree-section').style.display = 'block';
+
+        buildVideoRows(data);
+        setupOopsObserver();
+        document.getElementById('screen-hero').scrollTop = 0;
+
+        // start hero music
+        startHeroMusic(profile);
+      }
+
+      /* ════════════════════════════════════════
+         PHOTO CARDS (Ayesha / Addy — portrait flip)
+      ════════════════════════════════════════ */
+      function buildPhotoCards(cards, profile) {
+        const row = document.getElementById('photo-cards-row');
+        row.innerHTML = '';
+        cards.forEach((card, i) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'photo-card-wrap';
+          const inner = document.createElement('div');
+          inner.className = 'photo-card-portrait';
+          inner.innerHTML = `
+      <img src="${card.frontSrc || ''}" alt="Card ${i + 1}" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="photo-card-overlay"><span class="photo-card-hint">✨ Click to open</span></div>`;
+          wrap.appendChild(inner);
+          wrap.addEventListener('click', () => openPhotoPopup(card));
+          row.appendChild(wrap);
+        });
+      }
+
+      function openPhotoPopup(card) {
+        document.getElementById('pp-3d-inner').classList.remove('flipped');
+        document.getElementById('pp-front-img').src = card.frontSrc || '';
+        document.getElementById('pp-back-img').src = card.backSrc || '';
+        document.getElementById('photo-popup').style.display = 'flex';
+      }
+      function flipCard() {
+        document.getElementById('pp-3d-inner').classList.add('flipped');
+      }
+      function closePhotoPopup() {
+        document.getElementById('photo-popup').style.display = 'none';
+        document.getElementById('pp-3d-inner').classList.remove('flipped');
+      }
+      function handlePhotoPopupBgClick(e) {
+        if (e.target === document.getElementById('photo-popup')) closePhotoPopup();
+      }
+
+      /* ════════════════════════════════════════
+         ADSHA SQUARE CARDS
+      ════════════════════════════════════════ */
+      function buildAdshaSqCards(cards) {
+        const row = document.getElementById('adsha-photo-row');
+        row.innerHTML = '';
+        cards.forEach((card, i) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'photo-card-wrap';
+          const inner = document.createElement('div');
+          inner.className = 'photo-card-square';
+          inner.innerHTML = `
+      <img src="${card.imgSrc || ''}" alt="Card ${i + 1}" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="photo-card-overlay"><span class="photo-card-hint">✨ Tap</span></div>`;
+          wrap.appendChild(inner);
+          wrap.addEventListener('click', () => openPhotoPopupSq(card.imgSrc || ''));
+          row.appendChild(wrap);
+        });
+      }
+      function openPhotoPopupSq(src) {
+        document.getElementById('pp-sq-img').src = src;
+        document.getElementById('photo-popup-sq').style.display = 'flex';
+      }
+      function closePhotoPopupSq() {
+        document.getElementById('photo-popup-sq').style.display = 'none';
+      }
+      function handleSqPopupBgClick(e) {
+        if (e.target === document.getElementById('photo-popup-sq')) closePhotoPopupSq();
+      }
+
+      /* ════════════════════════════════════════
+         VIDEO ROWS
+      ════════════════════════════════════════ */
+      function buildVideoRows(data) {
+        buildLandRow('fan-edits-row', data.fanEditItems);
+        buildPortRow('creative-row', data.creativeItems);
+      }
+      function buildLandRow(id, items) {
+        const row = document.getElementById(id); if (!row) return;
+        row.innerHTML = '';
+        items.forEach(item => {
+          const card = document.createElement('div'); card.className = 'video-card-land';
+          card.innerHTML = `
+    <div class="video-thumb-land">
+    <video class="video-preview" muted autoplay loop playsinline>
+        <source src="${item.videoUrl}" type="video/mp4">
+    </video>
+    </div>
+    <div class="video-title">${item.title}</div>
+    `;
+          card.onclick = () => openVideoViewer(item, false);
+          row.appendChild(card);
+        });
+      }
+
+      function buildPortRow(id,items){
+
+        const row=document.getElementById(id);
+
+        if(!row) return;
+
+        row.innerHTML='';
+
+        items.forEach(item=>{
+
+          const card=document.createElement('div');
+          card.className='video-card-port';
+
+          let media='';
+
+          /* IMAGE */
+
+          if(item.type==='image'){
+
+            media=`
+              <img
+                src="${item.imageUrl}"
+                class="creative-image"
+                alt="${item.title}">
+            `;
+
+          }
+
+          /* VIDEO */
+
+          else{
+
+            media=`
+              <video
+                class="creative-video-preview"
+                muted
+                autoplay
+                loop
+                playsinline
+                preload="metadata">
+
+                <source
+                  src="${item.videoUrl}"
+                  type="video/mp4">
+
+              </video>
+
+              <div class="play-overlay">▶</div>
+            `;
+          }
+
+          card.innerHTML=`
+            <div class="video-thumb-port">
+              ${media}
+            </div>
+
+            <div class="video-info">
+              <div class="video-title">${item.title}</div>
+            </div>
+          `;
+
+          card.onclick=()=>{
+
+            if(item.type==='image'){
+              openImageViewer(item);
+            }else{
+              openVideoViewer(item,true);
+            }
+
+          };
+
+          row.appendChild(card);
+
+        });
+
+      }
+
+      function openVideoViewer(item,isPortrait){
+
+        document.getElementById('viewer-title').textContent=item.title;
+        document.getElementById('viewer-sub').textContent=item.sub||'';
+
+        /* STOP BACKGROUND MUSIC */
+
+        if(window.heroAudioEl && !heroAudioEl.paused){
+          heroAudioEl.pause();
+          updateHeroMusicBtn(false);
+        }
+
+        if(window.bdayAudioEl && !bdayAudioEl.paused){
+          bdayAudioEl.pause();
+          updateBdayMusicBtn(false);
+        }
+
+        const bgAudio=document.getElementById('bg-audio');
+
+        if(bgAudio && !bgAudio.paused){
+          bgAudio.pause();
+        }
+
+        const mb=document.getElementById('viewer-modal-box');
+        const area=document.getElementById('viewer-video-area');
+
+        if(isPortrait){
+          mb.className='modal-box portrait-box';
+          area.className='viewer-video-area portrait-ar';
+        }else{
+          mb.className='modal-box landscape-box';
+          area.className='viewer-video-area landscape-ar';
+        }
+
+        area.innerHTML=`
+          <video
+            controls
+            autoplay
+            playsinline
+            style="width:100%;height:100%;border-radius:12px;object-fit:contain;background:#000;">
+
+            <source
+              src="${item.videoUrl}"
+              type="video/mp4">
+
+          </video>
+        `;
+
+        showModal('video-viewer');
+
+      }
+
+      function openImageViewer(item) {
+
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('image-modal-img');
+
+        img.src = item.imageUrl;
+
+        modal.classList.add('show');
+      }
+
+      /* ════════════════════════════════════════
+         MODALS
+      ════════════════════════════════════════ */
+      function showModal(id) { document.getElementById(id).classList.add('show'); }
+      function hideModal(id) { document.getElementById(id).classList.remove('show'); }
+
+      function openRatingsModal() {
+        const d = PROFILES[currentProfile];
+        document.getElementById('ratings-emoji').textContent = d.ratingsEmoji;
+        document.getElementById('ratings-title').textContent = d.ratingsTitle;
+        document.getElementById('ratings-footer').innerHTML = d.ratingsFooter.replace(/\n/g, '<br>');
+        const bars = document.getElementById('ratings-bars'); bars.innerHTML = '';
+        d.ratings.forEach(r => {
+          const val = Math.min(r.val, 100);
+          const div = document.createElement('div'); div.className = 'rating-row';
+          div.innerHTML = `<div class="rating-label">${r.label}</div><div class="rating-bar-bg"><div class="rating-bar-fill${d.barClass ? ' ' + d.barClass : ''}" style="width:0%" data-val="${val}"></div></div><div class="rating-stars">${r.val >= 100 ? '💯' : r.val + '%'}</div>`;
+          bars.appendChild(div);
+        });
+        showModal('ratings-modal');
+        setTimeout(() => {
+          bars.querySelectorAll('.rating-bar-fill').forEach(b => b.style.width = b.dataset.val + '%');
+          if (currentProfile === 'addy') {
+            setTimeout(() => { const f = bars.querySelector('.rating-bar-fill'); if (f) f.style.background = 'linear-gradient(135deg,#ff4500,#ffd700)'; }, 2000);
+          }
+        }, 120);
+      }
+
+      function openPlayModal() {
+        const d = PROFILES[currentProfile];
+        document.getElementById('play-modal-title').textContent = d.playTitle;
+        document.getElementById('play-modal-genre').textContent = d.playGenre;
+        document.getElementById('play-modal-tag').textContent = d.playTagline;
+        const area = document.getElementById('play-video-area');
+        area.innerHTML = d.videoUrl
+          ? `<iframe src="${d.videoUrl}" frameborder="0" allowfullscreen style="width:100%;height:100%;border-radius:10px"></iframe>`
+          : `<div class="player-placeholder"><div class="big-icon">🎬</div><p>Add your videoUrl in PROFILES data</p><p style="font-size:.72rem;color:rgba(255,255,255,.2)">e.g. https://www.youtube.com/embed/VIDEO_ID</p></div>`;
+        showModal('play-modal');
+      }
+
+      /* ─── fullscreen / replay ─── */
+      function requestFullscreen(areaId) {
+        const area = document.getElementById(areaId);
+        const iframe = area.querySelector('iframe');
+        const el = iframe || area;
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      }
+      function replayArea(areaId) {
+        const iframe = document.getElementById(areaId).querySelector('iframe');
+        if (iframe) { const s = iframe.src; iframe.src = ''; iframe.src = s; }
+      }
+
+      /* ─── cert modal — one-at-a-time horizontal ─── */
+      function openCertModal() {
+        const certs = PROFILES[currentProfile].certs || [];
+        certIndex = 0;
+        const slider = document.getElementById('cert-slider');
+        const dotsEl = document.getElementById('cert-dots');
+        slider.innerHTML = ''; dotsEl.innerHTML = '';
+
+        // title + hint based on count
+        const isSingle = certs.length === 1;
+        document.getElementById('cert-modal-hint').textContent = isSingle ? '' : 'Use arrows to scroll ← →';
+
+        certs.forEach((c, i) => {
+          const slide = document.createElement('div'); slide.className = 'cert-slide';
+          if (c.src) {
+            slide.innerHTML = `<img src="${c.src}" alt="${c.label}">`;
+          } else {
+            slide.innerHTML = `<div class="cert-placeholder-inner">📋<br>${c.label}<br><span style="font-size:.62rem;opacity:.6">Add image: src="${c.label.toLowerCase().replace(' ', '')}.jpg"</span></div>`;
+          }
+          slider.appendChild(slide);
+          const dot = document.createElement('div'); dot.className = 'cert-dot' + (i === 0 ? ' active' : '');
+          dot.onclick = () => certGoTo(i);
+          dotsEl.appendChild(dot);
+        });
+
+        showModal('cert-modal');
+      }
+
+      function certSlide(dir) {
+        const certs = PROFILES[currentProfile].certs || [];
+        certIndex = Math.max(0, Math.min(certs.length - 1, certIndex + dir));
+        certGoTo(certIndex);
+      }
+      function certGoTo(idx) {
+        certIndex = idx;
+        const slider = document.getElementById('cert-slider');
+        const slides = slider.querySelectorAll('.cert-slide');
+        const w = slides[0] ? slides[0].offsetWidth : 300;
+        slider.scrollTo({ left: idx * w, behavior: 'smooth' });
+        document.querySelectorAll('.cert-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+
+      /* ════════════════════════════════════════
+         PASSWORD
+      ════════════════════════════════════════ */
+      function showPasswordModal() {
+        ['pw0', 'pw1', 'pw2', 'pw3'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('pw-error').style.display = 'none';
+        showModal('pw-modal');
+        setTimeout(() => document.getElementById('pw0').focus(), 300);
+      }
+      function pwInput(index) {
+        const val = document.getElementById('pw' + index).value;
+        if (val.length === 1 && index < 3) document.getElementById('pw' + (index + 1)).focus();
+        if (index === 3) checkPassword();
+      }
+      function checkPassword() {
+        const entered = ['pw0', 'pw1', 'pw2', 'pw3'].map(id => document.getElementById(id).value).join('');
+        if (entered === PASSWORD) {
+          hideModal('pw-modal');
+          showScreen('screen-chillflix-entry');
+          launchConfetti();
+        } else {
+          const row = document.querySelector('.pw-input-row');
+          document.getElementById('pw-error').style.display = 'block';
+          row.classList.add('pw-shake');
+          setTimeout(() => row.classList.remove('pw-shake'), 500);
+          ['pw0', 'pw1', 'pw2', 'pw3'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+          setTimeout(() => document.getElementById('pw0').focus(), 100);
+        }
+      }
+
+      /* ════════════════════════════════════════
+         LOGO REVEAL
+      ════════════════════════════════════════ */
+      function showLogoReveal() {
+        showScreen('screen-logo');
+        playTransitionChime();
+        setTimeout(() => showScreen('screen-profiles'), 2800);
+      }
+
+      /* ════════════════════════════════════════
+         COUNTDOWN
+      ════════════════════════════════════════ */
+      function startCountdown() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        const target = new Date('2026-12-24T00:00:00');
+        function update() {
+          const diff = target - new Date(); if (diff <= 0) return;
+          const d = Math.floor(diff / 86400000), h = Math.floor(diff % 86400000 / 3600000), m = Math.floor(diff % 3600000 / 60000), s = Math.floor(diff % 60000 / 1000);
+          document.getElementById('cd-days').textContent = d;
+          document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+          document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+          document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+        }
+        update(); countdownInterval = setInterval(update, 1000);
+      }
+
+      /* ════════════════════════════════════════
+         CONFETTI
+      ════════════════════════════════════════ */
+      function launchConfetti() {
+        const cols = ['#E50914', '#ffd700', '#ff6b9d', '#7fff7f', '#7fb3ff', '#ff8c00', '#ff69b4', '#fff'];
+        for (let i = 0; i < 80; i++) {
+          setTimeout(() => {
+            const p = document.createElement('div'); p.className = 'confetti-piece';
+            p.style.left = Math.random() * 100 + 'vw'; p.style.top = '-10px';
+            p.style.background = cols[Math.floor(Math.random() * cols.length)];
+            p.style.borderRadius = Math.random() > .5 ? '50%' : '0';
+            p.style.width = (Math.random() * 8 + 4) + 'px'; p.style.height = (Math.random() * 8 + 4) + 'px';
+            p.style.animationDuration = (Math.random() * 2 + 2) + 's'; p.style.animationDelay = (Math.random() * .5) + 's';
+            document.body.appendChild(p); setTimeout(() => p.remove(), 4000);
+          }, i * 25);
+        }
+      }
+
+      /* ════════════════════════════════════════
+         CHIME
+      ════════════════════════════════════════ */
+      function playTransitionChime() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          [523, 659, 784, 1047, 784, 659, 523].forEach((f, i) => {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination); o.type = 'sine'; o.frequency.value = f;
+            const t = ctx.currentTime + i * .18;
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.12, t + .05); g.gain.linearRampToValueAtTime(0, t + .35);
+            o.start(t); o.stop(t + .4);
+          });
+        } catch (e) { }
+      }
+
+      /* ════════════════════════════════════════
+         FLOATS / STARS
+      ════════════════════════════════════════ */
+      function initFloats(cid, items, n) {
+        const c = document.getElementById(cid); if (!c) return;
+        c.innerHTML = ''; c.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none;';
+        for (let i = 0; i < n; i++) {
+          const el = document.createElement('div'); el.className = 'float-item';
+          el.textContent = items[Math.floor(Math.random() * items.length)];
+          el.style.left = Math.random() * 100 + '%';
+          el.style.animationDelay = Math.random() * 8 + 's';
+          el.style.animationDuration = (Math.random() * 4 + 5) + 's';
+          c.appendChild(el);
+        }
+      }
+      function initIntroFloats() { initFloats('intro-floats', ['🌸', '💕', '✨', '⭐', '💖', '🎀', '🌟', '💫', '🎊', '🌺', '🦋'], 20); }
+      function initYesFloats() { initFloats('yes-floats', ['🎉', '💖', '✨', '⭐', '💕', '🎊', '🌟', '🥳'], 25); }
+      function initGiftFloats() { initFloats('gift-floats', ['💝', '💕', '✨', '💖', '💗', '💓', '💞', '🌸', '⭐', '🎀'], 30); }
+      function initStarField() {
+        const f = document.getElementById('star-field'); if (!f) return; f.innerHTML = '';
+        for (let i = 0; i < 80; i++) {
+          const s = document.createElement('div'); s.className = 'star';
+          const sz = Math.random() * 3 + 1;
+          s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random() * 100}%;left:${Math.random() * 100}%;animation-delay:${Math.random() * 2}s;animation-duration:${Math.random() * 2 + 1}s`;
+          f.appendChild(s);
+        }
+      }
+
+      /* ════════════════════════════════════════
+         OOPS (scroll triggered)
+      ════════════════════════════════════════ */
+      function setupOopsObserver() {
+        if (oopsObserver) oopsObserver.disconnect();
+        const trigger = document.getElementById('oops-trigger'); if (!trigger) return;
+        oopsObserver = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => showModal('oops-modal'), 800); oopsObserver.disconnect(); } });
+        }, { threshold: .5 });
+        oopsObserver.observe(trigger);
+      }
+
+      /* ════════════════════════════════════════
+         INIT
+      ════════════════════════════════════════ */
+      window.addEventListener('load', () => {
+        initIntroFloats();
+
+        document.getElementById('btn-no-main').addEventListener('click', () => {
+          showScreen('screen-no');
+          setTimeout(() => showModal('no-modal'), 3000);
+        });
+
+        // close modals on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(o => {
+          o.addEventListener('click', e => {
+            if (e.target === o) {
+              o.classList.remove('show');
+              if (o.id === 'no-modal') setTimeout(() => showModal('no-modal'), 3000);
+            }
+          });
+        });
+
+        // cert btn wire-up
+        const certBtn = document.getElementById('cert-btn');
+        if (certBtn) certBtn.addEventListener('click', openCertModal);
+
+        // pw keyboard nav
+        ['pw0', 'pw1', 'pw2', 'pw3'].forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('keydown', e => {
+            if (e.key === 'Backspace' && el.value === '' && i > 0) document.getElementById('pw' + (i - 1)).focus();
+            if (e.key === 'Enter') checkPassword();
+          });
+        });
+
+        // set audio sources from MUSIC config
+        const ab = document.getElementById('audio-bday');
+        if (ab && MUSIC.bday) ab.src = MUSIC.bday;
+        ['ayesha', 'addy', 'adsha'].forEach(p => {
+          const a = document.getElementById('audio-' + p);
+          if (a && MUSIC[p]) a.src = MUSIC[p];
+        });
+
+      });
+  </script>
+</body>
+
+</html>
