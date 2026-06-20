@@ -3914,7 +3914,24 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       ════════════════════════════════════════ */
       function showModal(id) { document.getElementById(id).classList.add('show'); }
       function hideModal(id) {
-        document.getElementById(id).classList.remove('show');
+        const modal = document.getElementById(id);
+        if (!modal) return;
+
+        modal.classList.remove('show');
+
+        // Stop any media playing inside this modal.
+        modal.querySelectorAll('video').forEach(video => {
+          video.pause();
+          try { video.currentTime = 0; } catch (e) {}
+        });
+        modal.querySelectorAll('audio').forEach(audio => {
+          audio.pause();
+          try { audio.currentTime = 0; } catch (e) {}
+        });
+        modal.querySelectorAll('iframe').forEach(frame => {
+          frame.src = '';
+        });
+
         // Restore background music state when closing modals (only if user didn't manually pause)
         // Also check if audio is currently paused to avoid issues with non-video modals
         if (audioStateBeforeModal.heroWasPlaying && heroAudioEl && heroAudioEl.paused && !userPausedHero) {
