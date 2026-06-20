@@ -3364,7 +3364,7 @@ Admired for her kindness, loved for her energy and cherished for the happiness s
         ratingsEmoji: '⭐', ratingsTitle: 'AYESHA RATINGS', barClass: '',
         playTitle: '✨ THE HUMAN SUNSHINE', playGenre: 'Radiance • Happy  • Comfort • Heartwarming',
         playTagline: '"Some people spend their lives searching for light. Some are born carrying it."',
-        videoUrl: 'https://res.cloudinary.com/dafrmc2hk/video/upload/v1781778129/Ayesha_w37xm5.mp4',
+        videoUrl: 'https://res.cloudinary.com/dj2c2xggv/video/upload/v1781957444/Ayesha_s0xqun.mp4',
         // 10 flip cards: frontSrc = portrait front pic, backSrc = portrait back pic with message
         photoCards: [
           { frontSrc: 'Ayesha poster/1.png', backSrc: 'Ayesha msg/santu.png' }, { frontSrc: 'Ayesha poster/2.png', backSrc: 'Ayesha msg/Marie.png' },
@@ -3409,7 +3409,7 @@ Admired for his handsome looks, respected for his character and loved for the ge
         ratingsEmoji: '🔥', ratingsTitle: 'ADDY RATINGS', barClass: 'rating-bar-fill-addy',
         playTitle: '😎 THE DAWNBREAKER', playGenre: 'Charisma • Inspiration • Legend • Iconic',
         playTagline: '"Some people arrive and everything changes. He was that person."',
-        videoUrl: 'https://res.cloudinary.com/dafrmc2hk/video/upload/v1781778132/Addy_gmfy99.mp4',
+        videoUrl: 'https://res.cloudinary.com/dj2c2xggv/video/upload/v1781957429/Addy_phntzh.mp4',
         photoCards: [
           { frontSrc: 'Adnan poster/1.png', backSrc: 'Adnan msg/Nits.png' }, { frontSrc: 'Adnan poster/2.png', backSrc: 'Adnan msg/Santu.png' },
           { frontSrc: 'Adnan poster/3.png', backSrc: 'Adnan msg/Smriti_.png' }, { frontSrc: 'Adnan poster/4.png', backSrc: 'Adnan msg/reya.png' },
@@ -3459,7 +3459,7 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
         ratingsEmoji: '✨', ratingsTitle: 'ADSHA\'S RATINGS', barClass: 'rating-bar-fill-adsha',
         playTitle: '💖 UN INATTENDU POUR TOUJOURS', playGenre: 'Funny • Heart • Playful • Wholesome',
         playTagline: '"Some stories can\'t be predicted. The best ones never can."',
-        videoUrl: 'https://res.cloudinary.com/dafrmc2hk/video/upload/v1781783436/Adsha_main_bn6s4w.mp4',
+        videoUrl: 'https://res.cloudinary.com/dj2c2xggv/video/upload/v1781957452/Adsha_main_y7lk69.mp4',
         // 5 instagram square cards, no flip
         adshaSqCards: [
           { imgSrc: 'Adsha poster/1.png' }, { imgSrc: 'Adsha poster/2.png' }, { imgSrc: 'Adsha poster/3.jpg' }, { imgSrc: 'Adsha poster/4.png' }, { imgSrc: 'Adsha poster/5.jpg' }
@@ -3501,6 +3501,11 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
     // Track which audio is "active hero" audio element
     let heroAudioEl = null;
     let bdayAudioEl = null;
+    // Track audio state before modal opens (to resume properly after closing)
+    let audioStateBeforeModal = { heroWasPlaying: false, bdayWasPlaying: false };
+    // Track if user manually paused (vs system pausing for modals)
+    let userPausedHero = false;
+    let userPausedBday = false;
 
     /* ════════════════════════════════════════
        SCREEN NAVIGATION
@@ -3549,6 +3554,8 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
         const a = document.getElementById(id);
         if (a) { a.pause(); a.currentTime = 0; }
       });
+      userPausedHero = false;
+      userPausedBday = false;
       updateMusicBtnState(false);
     }
 
@@ -3558,9 +3565,11 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       if (!a) return;
       if (a.paused) {
         a.play().catch(() => { });
+        userPausedBday = false;
         updateBdayMusicBtn(true);
       } else {
         a.pause();
+        userPausedBday = true;
         updateBdayMusicBtn(false);
       }
     }
@@ -3577,9 +3586,11 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       if (!heroAudioEl) return;
       if (heroAudioEl.paused) {
         heroAudioEl.play().catch(() => { });
+        userPausedHero = false;
         updateHeroMusicBtn(true);
       } else {
         heroAudioEl.pause();
+        userPausedHero = true;
         updateHeroMusicBtn(false);
       }
     }
@@ -3604,6 +3615,7 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       if (!heroAudioEl || !src) return;
       heroAudioEl.src = src;
       heroAudioEl.volume = 0.25;
+      userPausedHero = false;
       heroAudioEl.play().then(() => updateHeroMusicBtn(true)).catch(() => { });
     }
 
@@ -3628,6 +3640,7 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       if (bdayAudioEl) {
         bdayAudioEl.src = MUSIC.bday || 'audio/birthday.mp3';
         bdayAudioEl.volume = 0.25;
+        userPausedBday = false;
         bdayAudioEl.play().then(() => updateBdayMusicBtn(true)).catch(() => { });
       }
     }
@@ -3850,16 +3863,7 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
         document.getElementById('viewer-sub').textContent=item.sub||'';
 
         /* STOP BACKGROUND MUSIC */
-
-        if(window.heroAudioEl && !heroAudioEl.paused){
-          heroAudioEl.pause();
-          updateHeroMusicBtn(false);
-        }
-
-        if(window.bdayAudioEl && !bdayAudioEl.paused){
-          bdayAudioEl.pause();
-          updateBdayMusicBtn(false);
-        }
+        pauseAudioForModal();
 
         const bgAudio=document.getElementById('bg-audio');
 
@@ -3897,7 +3901,6 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       }
 
       function openImageViewer(item) {
-
         const modal = document.getElementById('image-modal');
         const img = document.getElementById('image-modal-img');
 
@@ -3910,7 +3913,35 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
          MODALS
       ════════════════════════════════════════ */
       function showModal(id) { document.getElementById(id).classList.add('show'); }
-      function hideModal(id) { document.getElementById(id).classList.remove('show'); }
+      function hideModal(id) {
+        document.getElementById(id).classList.remove('show');
+        // Restore background music state when closing modals (only if user didn't manually pause)
+        // Also check if audio is currently paused to avoid issues with non-video modals
+        if (audioStateBeforeModal.heroWasPlaying && heroAudioEl && heroAudioEl.paused && !userPausedHero) {
+          heroAudioEl.play().catch(() => {});
+          updateHeroMusicBtn(true);
+        }
+        if (audioStateBeforeModal.bdayWasPlaying && bdayAudioEl && bdayAudioEl.paused && !userPausedBday) {
+          bdayAudioEl.play().catch(() => {});
+          updateBdayMusicBtn(true);
+        }
+      }
+      
+      function pauseAudioForModal() {
+        // Save current audio state (only if user didn't manually pause)
+        audioStateBeforeModal.heroWasPlaying = heroAudioEl && !heroAudioEl.paused;
+        audioStateBeforeModal.bdayWasPlaying = bdayAudioEl && !bdayAudioEl.paused;
+        
+        // Pause all audio (only if not already paused by user)
+        if (heroAudioEl && !heroAudioEl.paused && !userPausedHero) {
+          heroAudioEl.pause();
+          updateHeroMusicBtn(false);
+        }
+        if (bdayAudioEl && !bdayAudioEl.paused && !userPausedBday) {
+          bdayAudioEl.pause();
+          updateBdayMusicBtn(false);
+        }
+      }
 
       function openRatingsModal() {
         const d = PROFILES[currentProfile];
@@ -3934,6 +3965,8 @@ From laughter-filled adventures to unexpectedly wholesome moments, they continue
       }
 
       function openPlayModal() {
+        pauseAudioForModal();
+        
         const d = PROFILES[currentProfile];
         document.getElementById('play-modal-title').textContent = d.playTitle;
         document.getElementById('play-modal-genre').textContent = d.playGenre;
